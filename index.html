@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Djoser</title>
+<style>
+:root{--bg:#ffffff;--side:#fafaf9;--text:#1c1917;--muted:#78716c;--line:#e7e5e4;--brand:#ee8700;--brand-soft:#fff4e5;--code:#1c1917;--code-text:#fafaf9;--card:#ffffff}
+:root[data-theme="dark"]{--bg:#0c0a09;--side:#141110;--text:#f5f5f4;--muted:#a8a29e;--line:#292524;--brand:#ffb655;--brand-soft:#2a1c08;--code:#1c1917;--code-text:#f5f5f4;--card:#141110}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c0a09;--side:#141110;--text:#f5f5f4;--muted:#a8a29e;--line:#292524;--brand:#ffb655;--brand-soft:#2a1c08;--code:#1c1917;--code-text:#f5f5f4;--card:#141110}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.7 "Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--brand);text-decoration:none}
+a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:16px;height:64px;padding:0 24px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;color:var(--text)}
+.brand svg{width:30px;height:30px}
+.badge{font-size:12px;font-weight:600;color:var(--brand);background:var(--brand-soft);border-radius:999px;padding:2px 10px}
+.search{margin-left:auto;position:relative}
+.search input{width:260px;max-width:42vw;font:inherit;font-size:14px;color:var(--text);background:var(--side);border:1px solid var(--line);border-radius:10px;padding:7px 12px}
+.search input:focus{outline:2px solid var(--brand);outline-offset:1px}
+.toggle{font:inherit;font-size:14px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:10px;padding:6px 10px;cursor:pointer}
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);max-width:1240px;margin:0 auto}
+nav{position:sticky;top:64px;height:calc(100vh - 64px);overflow:auto;padding:28px 20px 40px 24px;border-right:1px solid var(--line);background:var(--side)}
+nav h4{margin:22px 0 6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+nav h4:first-child{margin-top:0}
+nav a{display:block;padding:4px 10px;margin-left:-10px;border-radius:8px;color:var(--text);font-size:14.5px}
+nav a:hover{background:var(--brand-soft);text-decoration:none}
+nav a.active{color:var(--brand);font-weight:600;background:var(--brand-soft)}
+main{padding:40px 56px 96px;min-width:0}
+.hero{display:flex;gap:28px;align-items:center;padding:28px 32px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(135deg,var(--brand-soft),transparent 70%)}
+.hero svg{flex:none;width:88px;height:88px}
+.hero h1{margin:0;font-size:34px;line-height:1.2}
+.hero p{margin:8px 0 0;color:var(--muted)}
+.status{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:14px;font-weight:600;color:#15803d}
+.status::before{content:"";width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px color-mix(in srgb,#22c55e 25%,transparent)}
+section{padding-top:28px}
+h2{margin:36px 0 8px;font-size:26px;line-height:1.3;border-bottom:1px solid var(--line);padding-bottom:8px}
+h3{margin:26px 0 6px;font-size:18px}
+p{margin:10px 0}
+.lead{font-size:17px;color:var(--muted)}
+pre{position:relative;margin:14px 0;padding:16px 18px;background:var(--code);color:var(--code-text);border-radius:12px;overflow:auto;font:14px/1.6 "Cascadia Code","Cascadia Mono",Consolas,monospace}
+pre .copy{position:absolute;top:8px;right:8px;font:12px "Segoe UI",sans-serif;color:#d6d3d1;background:#292524;border:1px solid #44403c;border-radius:8px;padding:3px 9px;cursor:pointer;opacity:0;transition:opacity .15s}
+pre:hover .copy{opacity:1}
+code{font-family:"Cascadia Code","Cascadia Mono",Consolas,monospace;font-size:.9em}
+p code,td code,li code{background:var(--brand-soft);color:var(--text);padding:1px 6px;border-radius:6px}
+.c{color:#a8a29e}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:15px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;color:var(--muted);font-weight:600}
+td:first-child{white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
+.card{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--text)}
+.card:hover{border-color:var(--brand);text-decoration:none}
+.card b{display:block;margin-bottom:4px}
+.card span{font-size:14px;color:var(--muted)}
+.note{margin:16px 0;padding:12px 16px;border-left:4px solid var(--brand);background:var(--brand-soft);border-radius:0 10px 10px 0;font-size:15px}
+.hidden{display:none}
+footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+@media (max-width:900px){.layout{grid-template-columns:1fr}nav{display:none}main{padding:28px 16px 72px}.hero{flex-direction:column;align-items:flex-start}.search input{width:160px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <a class="brand" href="#welcome"><svg viewBox="0 0 512 512" aria-hidden="true"><path fill="#FFB655" d="M424.5 418.5 213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9L2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h387.3c7.1 0 13.7-3.8 17.3-10 3.5-6.1 3.5-13.8-.1-19.9z"/><path fill="#EE8700" d="M361.7 73.4c-3.6-6.1-10.1-9.9-17.2-9.9s-13.6 3.8-17.2 9.9l-52.2 89.4 101.3 173.4h104c7.1 0 13.7-3.8 17.3-10 3.5-6.2 3.5-13.8-.1-19.9zM213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9l-91.1 156h108.3zM50.7 336.2 2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h193.7V336.2z"/><path fill="#FFE477" d="M213.6 242.7v93.5h162.8l-54.6-93.5z"/></svg>Djoser</a>
+  <span class="badge">0.3.1</span>
+  <div class="search"><input id="search" type="search" placeholder="Search commands..." aria-label="Search commands"></div>
+  <button class="toggle" id="theme" type="button" aria-label="Switch light and dark">Theme</button>
+</header>
+<div class="layout">
+<nav id="menu">
+  <h4>Getting started</h4>
+  <a href="#welcome">Welcome</a>
+  <a href="#laravel">A Laravel project from zero</a>
+  <h4>djoser.yaml</h4>
+  <a href="#yaml">Every key</a>
+  <a href="#yaml-services">Services</a>
+  <a href="#yaml-scripts">Scripts and workers</a>
+  <a href="#example-laravel">Example: large Laravel app</a>
+  <a href="#example-next">Example: Next.js</a>
+  <a href="#example-plain">Example: plain page</a>
+  <h4>Commands</h4>
+  <a href="#commands">Projects</a>
+  <a href="#commands-tools">Tools</a>
+  <a href="#commands-workers">Scripts and workers</a>
+  <a href="#commands-data">Databases</a>
+  <a href="#commands-sites">Sites</a>
+  <a href="#commands-versions">Versions</a>
+  <a href="#commands-djoser">Djoser itself</a>
+  <h4>Guides</h4>
+  <a href="#sites">Sites and HTTPS</a>
+  <a href="#hosts">Another domain: hosts file</a>
+  <a href="#backups">Databases and backups</a>
+  <a href="#workers">Scripts and workers</a>
+  <a href="#deploy">Deploy to a server</a>
+  <a href="#trouble">When something is wrong</a>
+</nav>
+<main id="content">
+<section id="welcome" data-search="welcome djoser running engine">
+  <div class="hero">
+    <svg viewBox="0 0 512 512" aria-hidden="true"><path fill="#FFB655" d="M424.5 418.5 213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9L2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h387.3c7.1 0 13.7-3.8 17.3-10 3.5-6.1 3.5-13.8-.1-19.9z"/><path fill="#EE8700" d="M361.7 73.4c-3.6-6.1-10.1-9.9-17.2-9.9s-13.6 3.8-17.2 9.9l-52.2 89.4 101.3 173.4h104c7.1 0 13.7-3.8 17.3-10 3.5-6.2 3.5-13.8-.1-19.9zM213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9l-91.1 156h108.3zM50.7 336.2 2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h193.7V336.2z"/><path fill="#FFE477" d="M213.6 242.7v93.5h162.8l-54.6-93.5z"/></svg>
+    <div>
+      <h1>Welcome to Djoser</h1>
+      <p>A native Windows home for PHP and Laravel: each project's own PHP and Node.js, local HTTPS sites, databases, S3, mail and background workers, from one command line.</p>      
+    </div>
+  </div>
+  <div class="grid">
+    <a class="card" href="#laravel"><b>A Laravel project from zero</b><span>From an empty folder to PHP, MySQL, Redis, S3, mail and workers.</span></a>
+    <a class="card" href="#yaml"><b>djoser.yaml, every key</b><span>One file says what a project needs.</span></a>
+    <a class="card" href="#commands"><b>Every command</b><span>Each command with every way to use it.</span></a>
+    <a class="card" href="#example-laravel"><b>Examples</b><span>A large Laravel app, Next.js and a plain page.</span></a>
+  </div>
+</section>
+
+<section id="laravel" data-search="laravel walkthrough install create init up env sync migrate workers">
+  <h2>A Laravel project from zero</h2>
+  <p class="lead">From an empty folder to a site with PHP, MySQL, Redis, S3 storage, a mail inbox, queue workers, the scheduler and Vite. For a project you already have, start at step 3 inside its folder.</p>
+  <h3>1. Get PHP, Composer and Node.js</h3>
+  <pre><code>djoser list php                    <span class="c"># the PHP versions you can install</span>
+djoser install php 8.5             <span class="c"># the newest 8.5 patch, checked against its published hash</span>
+djoser install composer latest
+djoser install node 22
+djoser use php 8.5 --env           <span class="c"># the PHP used outside projects (optional)</span>
+djoser runtimes                    <span class="c"># what is installed now</span></code></pre>
+  <p>The first version of each you install becomes the default outside projects by itself.</p>
+  <h3>2. Create the project</h3>
+  <pre><code>cd D:\Sites
+djoser composer create-project laravel/laravel shop
+cd shop</code></pre>
+  <h3>3. Describe it</h3>
+  <pre><code>djoser init                        <span class="c"># asks, with the Laravel answers filled in</span>
+djoser init --name shop --domain shop.localhost --root public --php 8.5 -y</code></pre>
+  <p><code>init</code> writes <code>djoser.yaml</code> with four PHP settings and six scripts. Add the services the project needs:</p>
+  <pre><code>name: shop
+domain: shop.localhost
+web-root: public
+services:
+  php:
+    version: 8.5
+    extensions: [redis]          <span class="c"># the PHP extension that talks to Redis</span>
+    ini:
+      memory_limit: 512M
+      upload_max_filesize: 64M
+  node: 22
+  mysql:
+    version: 8.4
+    database: shop
+  redis: 8.4                     <span class="c"># the Redis server itself</span>
+  rustfs: 1.0                    <span class="c"># S3 storage, with a bucket named shop</span>
+  mailpit: 1.33                  <span class="c"># every mail the app sends lands here</span>
+scripts:
+  queue: php artisan queue:work --memory=512 --max-time=3600
+  schedule: php artisan schedule:work
+  dev: npm run dev
+  build: npm run build
+workers:
+  - queue: 2
+  - schedule
+  - dev:
+      startup: false             <span class="c"># start it when you want it</span></code></pre>
+  <h3>4. Start it</h3>
+  <pre><code>djoser up</code></pre>
+  <p>The first run downloads what is missing, starts it, and offers to trust the local certificate. It ends with the address and how to reach each service: MySQL on <code>127.0.0.1:3306</code> as <code>root</code> with no password, Redis on <code>6379</code>, the S3 server on <code>9000</code> with its console, and the mail inbox at <code>http://127.0.0.1:8025</code>.</p>
+  <h3>5. Connect Laravel</h3>
+  <pre><code>djoser env sync</code></pre>
+  <p>Djoser compares <code>.env</code> with what it runs (<code>DB_*</code>, <code>REDIS_*</code>, <code>MAIL_*</code>, <code>AWS_*</code>, <code>APP_URL</code>) and shows each difference as the line you have and the line it expects. It changes the file only after you type <code>y</code>. Then choose what Laravel uses them for:</p>
+  <pre><code>CACHE_STORE=redis
+QUEUE_CONNECTION=redis
+SESSION_DRIVER=redis
+REDIS_PREFIX=shop_
+FILESYSTEM_DISK=s3</code></pre>
+  <h3>6. Prepare the app</h3>
+  <pre><code>djoser composer require league/flysystem-aws-s3-v3
+djoser artisan migrate
+djoser artisan storage:link
+djoser npm install
+djoser run build</code></pre>
+  <p>Open <code>https://shop.localhost</code>.</p>
+  <h3>7. Watch it run</h3>
+  <pre><code>djoser status -w                   <span class="c"># services, workers, memory, failed jobs, redrawn</span>
+djoser workers start dev           <span class="c"># Vite, for hot reload while you work</span>
+djoser logs queue -f
+djoser jobs
+djoser jobs retry all
+djoser tool db                     <span class="c"># HeidiSQL on the shop database</span></code></pre>
+  <h3>8. Keep it safe and share it</h3>
+  <pre><code>djoser db backup                   <span class="c"># Documents\Djoser\Backups\shop</span>
+djoser share                       <span class="c"># a temporary public address, until Ctrl+C</span>
+djoser down</code></pre>
+</section>
+<section id="yaml" data-search="djoser.yaml yaml keys name domain aliases web-root tls backups">
+  <h2>djoser.yaml, every key</h2>
+  <p>Edit the file and run <code>djoser up</code>; <code>djoser status</code> says when it changed since the last <code>up</code>. Write only what you need: <code>mysql: 8.4</code> alone is enough. A key with no effect is reported by <code>up</code>, and an unknown one is a warning.</p>
+  <pre><code>name: shop                     <span class="c"># default: the folder's name</span>
+domain: shop.localhost         <span class="c"># default: &lt;name&gt;.localhost</span>
+aliases: [www, api]            <span class="c"># more subdomains; "*" serves any</span>
+web-root: public               <span class="c"># default: public for Laravel, else the folder with index.php or index.html</span>
+tls:                           <span class="c"># default: Djoser's local certificate</span>
+  cert: certs/shop.pem
+  key: certs/shop-key.pem
+backups: D:/Backups/shop       <span class="c"># default: Documents\Djoser\Backups\&lt;name&gt;</span>
+services:
+scripts:
+workers:</code></pre>
+  <p>A version is a line such as <code>8.5</code> or an exact one such as <code>8.5.12</code>. Servers are shared by projects, with one database per project, on <code>127.0.0.1</code> only; <code>port:</code>, <code>data:</code>, <code>dedicated: true</code> or <code>settings:</code> give a project its own server, which starts with empty data.</p>
+</section>
+
+<section id="yaml-services" data-search="services php node mysql mariadb postgres mongodb redis rustfs mailpit settings extensions ini port data dedicated database bucket">
+  <h2>Services</h2>
+  <h3>php</h3>
+  <pre><code>php:
+  version: 8.5
+  extensions: [redis, xdebug]    <span class="c"># djoser list extensions</span>
+  ini:                           <span class="c"># any php.ini setting but the extension ones and the CA bundle</span>
+    memory_limit: 512M
+    upload_max_filesize: 64M
+    post_max_size: 64M
+    max_execution_time: 120</code></pre>
+  <h3>node</h3>
+  <pre><code>node: 22                       <span class="c"># without it: .nvmrc, then .node-version (22, v22.11.0, lts/*, lts/iron, node)</span></code></pre>
+  <h3>mysql and mariadb</h3>
+  <pre><code>mysql:                         <span class="c"># or mariadb:</span>
+  version: 8.4                 <span class="c"># mysql 8.0, 8.4, 9.7; mariadb 10.11, 11.4, 11.8, 12.3, 13.0</span>
+  database: shop               <span class="c"># default: the project's name, - becomes _</span>
+  port: 3306                   <span class="c"># default: shared server from 3306</span>
+  data: D:/Data/shop-mysql     <span class="c"># the folder must exist</span>
+  dedicated: true
+  settings:                    <span class="c"># --name=value</span>
+    max_connections: 500
+    innodb_buffer_pool_size: 512M</code></pre>
+  <p>User <code>root</code>, no password. Djoser sets <code>datadir</code>, <code>port</code>, <code>bind_address</code>, <code>socket</code>, <code>console</code>, <code>mysqlx</code> and <code>no_defaults</code> itself.</p>
+  <h3>postgres</h3>
+  <pre><code>postgres:
+  version: 17                  <span class="c"># 15, 16, 17, 18</span>
+  database: shop
+  port: 5432
+  settings:                    <span class="c"># -c name=value</span>
+    shared_buffers: 256MB
+    work_mem: 16MB</code></pre>
+  <p>User <code>postgres</code>, no password; <code>env sync</code> sets <code>DB_CONNECTION=pgsql</code>.</p>
+  <h3>mongodb</h3>
+  <pre><code>mongodb:
+  version: 8.0                 <span class="c"># 7.0, 8.0, 8.2, 8.3; mongosh comes with it</span>
+  database: shop               <span class="c"># made on first write</span>
+  port: 27017
+  settings:                    <span class="c"># --name value</span>
+    wiredTigerCacheSizeGB: 1</code></pre>
+  <p>For Laravel, the <code>mongodb</code> PHP extension and <code>mongodb/laravel-mongodb</code>; <code>env sync</code> sets <code>MONGODB_URI</code> and <code>MONGODB_DATABASE</code>.</p>
+  <h3>redis</h3>
+  <pre><code>redis:
+  version: 8.4                 <span class="c"># 7.2, 7.4, 8.4, 8.10</span>
+  port: 6379
+  settings:                    <span class="c"># --name value</span>
+    maxmemory: 256mb
+    maxmemory-policy: allkeys-lru</code></pre>
+  <p>Projects sharing a server share keys: give each its own <code>REDIS_PREFIX</code>.</p>
+  <h3>rustfs</h3>
+  <pre><code>rustfs:
+  version: 1.0
+  bucket: shop                 <span class="c"># default: the project's name</span>
+  port: 9000                   <span class="c"># the console takes the next free port</span>
+  settings:                    <span class="c"># RUSTFS_&lt;NAME&gt; environment variables</span>
+    access_key: rustfsadmin
+    secret_key: rustfsadmin</code></pre>
+  <h3>mailpit</h3>
+  <pre><code>mailpit:
+  version: 1.33
+  port: 1025                   <span class="c"># SMTP; the inbox is on 8025</span>
+  settings:
+    max: 2000</code></pre>
+  <p><code>settings</code> gives the project its own server, and changing them restarts it at the next <code>up</code>.</p>
+</section>
+<section id="yaml-scripts" data-search="scripts workers startup count args shell">
+  <h2>Scripts and workers in djoser.yaml</h2>
+  <pre><code>scripts:
+  queue: php artisan queue:work --memory=512 --max-time=3600
+  test: php artisan test {args}             <span class="c"># arguments go where {args} stands, or at the end</span>
+  dev: npm run dev
+  deploy: "!git pull &amp;&amp; composer install &amp;&amp; php artisan migrate --force"
+workers:
+  - schedule                   <span class="c"># one, started by up</span>
+  - queue: 3                   <span class="c"># three of that script</span>
+  - dev:
+      startup: false           <span class="c"># started only by: djoser workers start dev</span>
+  - mail:
+      count: 2
+      startup: false</code></pre>
+  <p>A script starts with a Djoser tool (<code>php</code>, <code>artisan</code>, <code>composer</code>, <code>node</code>, <code>npm</code>, <code>npx</code>, <code>mysql</code> and the others). One that starts with <code>!</code>, in quotes, runs through <code>cmd</code>, so <code>git</code> and <code>&amp;&amp;</code> work. Every worker must be a script.</p>
+</section>
+
+<section id="example-laravel" data-search="example large laravel aliases tenants postgres reverb xdebug">
+  <h2>Example: a large Laravel app</h2>
+  <pre><code>name: shop
+domain: shop.localhost
+aliases: [www, admin, api, "*"]
+web-root: public
+backups: D:/Backups/shop
+services:
+  php:
+    version: 8.5
+    extensions: [redis, imagick, xdebug]
+    ini:
+      memory_limit: 1G
+      upload_max_filesize: 256M
+      post_max_size: 256M
+      xdebug.mode: debug
+      xdebug.start_with_request: trigger
+  node: 22
+  mysql:
+    version: 8.4
+    database: shop
+    settings:
+      max_connections: 500
+      innodb_buffer_pool_size: 1G
+  postgres:
+    version: 17
+    database: shop_reports
+  redis:
+    version: 8.4
+    settings:
+      maxmemory: 512mb
+  rustfs:
+    version: 1.0
+    bucket: shop-media
+  mailpit: 1.33
+scripts:
+  queue: php artisan queue:work redis --queue=high,default --memory=512 --max-time=3600
+  mail: php artisan queue:work redis --queue=mail --memory=256 --max-time=3600
+  schedule: php artisan schedule:work
+  reverb: php artisan reverb:start
+  dev: npm run dev
+  build: npm run build
+  test: php artisan test --parallel {args}
+  deploy: "!git pull &amp;&amp; composer install &amp;&amp; php artisan migrate --force &amp;&amp; npm run build"
+workers:
+  - queue: 3
+  - mail
+  - schedule
+  - reverb
+  - dev:
+      startup: false</code></pre>
+  <p><code>up</code> serves <code>shop.localhost</code>, <code>www.</code>, <code>admin.</code>, <code>api.</code> and any <code>&lt;tenant&gt;.shop.localhost</code> from the same project, and starts six worker processes.</p>
+</section>
+
+<section id="example-next" data-search="example next.js nextjs node static export">
+  <h2>Example: Next.js</h2>
+  <p>Djoser serves files from a folder and does not yet stand in front of the Next.js server. Two ways work today: a static export served at <code>https://web.localhost</code>, and the dev server kept running as a worker on port 3000.</p>
+  <pre><code>djoser npx create-next-app@latest web
+cd web
+djoser npm run build               <span class="c"># with output: 'export' in next.config.js, this writes out</span>
+djoser init --root out -y</code></pre>
+  <pre><code>name: web
+domain: web.localhost
+web-root: out
+services:
+  node: 22
+  postgres:
+    version: 17
+    database: web
+  redis: 8.4
+scripts:
+  dev: npm run dev
+  build: npm run build
+  prisma: npx prisma {args}
+workers:
+  - dev</code></pre>
+  <pre><code>djoser up
+djoser run prisma migrate dev
+djoser logs dev -f</code></pre>
+</section>
+
+<section id="example-plain" data-search="example plain html php page static">
+  <h2>Example: a plain page</h2>
+  <pre><code>cd D:\Sites\landing
+djoser init -y
+djoser up</code></pre>
+  <pre><code>name: landing
+domain: landing.localhost
+web-root: .
+services:
+  php: 8.5                     <span class="c"># leave services out for HTML only</span></code></pre>
+</section>
+<section id="commands" data-search="commands projects init up down status ps projects remove exec which config env sync global project no-color">
+  <h2>Every command</h2>
+  <p>Inside a project folder, commands act on that project. <code>--project &lt;name&gt;</code> picks another one from anywhere, <code>--no-color</code> prints plain text, and <code>djoser &lt;command&gt; --help</code> lists its options.</p>
+  <h3>Projects</h3>
+  <table>
+    <tr><th>Command</th><th>What it does</th></tr>
+    <tr><td><code>djoser init</code></td><td>Ask the questions and write <code>djoser.yaml</code> here</td></tr>
+    <tr><td><code>djoser init &lt;folder&gt;</code></td><td>The same for another folder</td></tr>
+    <tr><td><code>djoser init --name shop --domain shop.localhost --root public --php 8.5</code></td><td>Answer from the command line; the rest are asked</td></tr>
+    <tr><td><code>djoser init -y</code></td><td>Take every default</td></tr>
+    <tr><td><code>djoser up</code></td><td>Start what <code>djoser.yaml</code> asks for, downloading what is missing; again after an edit</td></tr>
+    <tr><td><code>djoser down</code></td><td>Stop the site, the servers only it uses, and its workers</td></tr>
+    <tr><td><code>djoser status</code></td><td>Address, services, workers, memory, failed jobs, and changes since the last <code>up</code></td></tr>
+    <tr><td><code>djoser status -w</code></td><td>The same, redrawn every 2 seconds until Ctrl+C</td></tr>
+    <tr><td><code>djoser ps</code> / <code>ps -a</code></td><td>Running projects; <code>-a</code> adds stopped ones</td></tr>
+    <tr><td><code>djoser projects</code></td><td>Every project Djoser knows, with its folder</td></tr>
+    <tr><td><code>djoser remove</code> / <code>remove &lt;name&gt; -y</code></td><td>Stop a project and forget it; files and data stay</td></tr>
+    <tr><td><code>djoser exec &lt;project&gt; &lt;tool&gt; [arguments]</code></td><td>Run a tool inside a project from anywhere</td></tr>
+    <tr><td><code>djoser which &lt;tool&gt;</code></td><td>Which version a tool runs here, where it was chosen, and its path</td></tr>
+    <tr><td><code>djoser config php</code></td><td>List the project's PHP settings</td></tr>
+    <tr><td><code>djoser config php memory_limit=1G,upload_max_filesize=200M</code></td><td>Change them; <code>memory_limit=</code> removes one</td></tr>
+    <tr><td><code>djoser env sync</code></td><td>Compare <code>.env</code> with what Djoser runs, and update it after a typed <code>y</code></td></tr>
+    <tr><td><code>djoser deploy</code> / <code>--path &lt;file|folder&gt;</code> / <code>-y</code></td><td>Write <code>deploy.sh</code> for an Ubuntu server (<a href="#deploy">experimental</a>)</td></tr>
+  </table>
+  <h3 id="commands-tools">Tools</h3>
+  <table>
+    <tr><th>Command</th><th>What it does</th></tr>
+    <tr><td><code>djoser php [arguments]</code></td><td>PHP with the project's extensions and settings</td></tr>
+    <tr><td><code>djoser artisan [arguments]</code></td><td><code>php artisan</code>, such as <code>djoser artisan migrate --seed</code></td></tr>
+    <tr><td><code>djoser composer [arguments]</code></td><td>Composer with the project's PHP</td></tr>
+    <tr><td><code>djoser node</code>, <code>npm</code>, <code>npx</code></td><td>Node.js tools with the project's version</td></tr>
+    <tr><td><code>djoser mysql</code>, <code>mariadb</code>, <code>psql</code>, <code>mongosh</code>, <code>redis-cli</code></td><td>Connect to the project's server and database by themselves</td></tr>
+    <tr><td><code>djoser mysqldump</code>, <code>mariadb-dump</code>, <code>pg_dump</code></td><td>Dump the project's database</td></tr>
+  </table>
+  <h3 id="commands-workers">Scripts and workers</h3>
+  <table>
+    <tr><th>Command</th><th>What it does</th></tr>
+    <tr><td><code>djoser run</code></td><td>List the scripts; for Laravel without any, offer to add six</td></tr>
+    <tr><td><code>djoser run &lt;name&gt; [arguments]</code></td><td>Run one, such as <code>djoser run test --filter=OrderTest</code></td></tr>
+    <tr><td><code>djoser workers</code></td><td>Every worker, its state, restarts and log</td></tr>
+    <tr><td><code>djoser workers start &lt;name&gt;</code></td><td>Start one until the next <code>up</code></td></tr>
+    <tr><td><code>djoser workers stop &lt;name&gt;</code></td><td>Stop it until the next <code>up</code>; <code>queue</code> means every queue worker, <code>queue-2</code> one</td></tr>
+    <tr><td><code>djoser workers restart &lt;name&gt;</code></td><td>Stop and start it</td></tr>
+    <tr><td><code>djoser workers start|stop &lt;name&gt; --save</code></td><td>Also write <code>startup: true|false</code> to <code>djoser.yaml</code></td></tr>
+    <tr><td><code>djoser logs</code></td><td>The workers and their log files</td></tr>
+    <tr><td><code>djoser logs &lt;worker&gt; [-n 200] [-f]</code></td><td>The end of a log; <code>-f</code> follows it until Ctrl+C</td></tr>
+    <tr><td><code>djoser jobs</code></td><td>The newest 50 failed queue jobs</td></tr>
+    <tr><td><code>djoser jobs retry &lt;id&gt;</code> / <code>jobs retry all</code></td><td>Run them again</td></tr>
+  </table>
+</section>
+<section id="commands-data" data-search="commands databases db backup restore list tool db heidisql">
+  <h3>Databases</h3>
+  <table>
+    <tr><th>Command</th><th>What it does</th></tr>
+    <tr><td><code>djoser db backup</code></td><td>One file per database (MySQL, MariaDB, PostgreSQL, MongoDB)</td></tr>
+    <tr><td><code>djoser db backup --service mysql</code></td><td>Only one server</td></tr>
+    <tr><td><code>djoser db list</code></td><td>The databases and backups, newest first</td></tr>
+    <tr><td><code>djoser db restore</code></td><td>The newest backup of each, after backing up the current data and a typed <code>y</code></td></tr>
+    <tr><td><code>djoser db restore &lt;file&gt;</code></td><td>A file from <code>db list</code>, or its full path</td></tr>
+    <tr><td><code>djoser db restore --service postgres -y</code></td><td>One server, without asking</td></tr>
+    <tr><td><code>djoser tool db</code></td><td>Open HeidiSQL on the project's database</td></tr>
+  </table>
+</section>
+<section id="commands-sites" data-search="commands sites trust share ports move">
+  <h3>Sites</h3>
+  <table>
+    <tr><th>Command</th><th>What it does</th></tr>
+    <tr><td><code>djoser trust</code></td><td>Trust the local certificate for this user</td></tr>
+    <tr><td><code>djoser share</code></td><td>A temporary public address through Cloudflare, until Ctrl+C</td></tr>
+    <tr><td><code>djoser ports</code></td><td>Every port Djoser keeps, and who holds it</td></tr>
+    <tr><td><code>djoser ports move &lt;service&gt;</code></td><td>The first free port after its usual one, through <code>port:</code> in <code>djoser.yaml</code></td></tr>
+    <tr><td><code>djoser ports move mysql 3307</code></td><td>That port</td></tr>
+  </table>
+</section>
+<section id="commands-versions" data-search="commands versions list install add use update uninstall runtimes php-ext unverified env">
+  <h3>Versions</h3>
+  <table>
+    <tr><th>Command</th><th>What it does</th></tr>
+    <tr><td><code>djoser list php</code></td><td>What can be installed; also node, composer, mysql, mariadb, postgres, mongodb, redis, rustfs, mailpit</td></tr>
+    <tr><td><code>djoser list php --all</code></td><td>Archived PHP builds too</td></tr>
+    <tr><td><code>djoser list extensions</code></td><td>PHP extensions for this project's PHP</td></tr>
+    <tr><td><code>djoser install php 8.5</code></td><td>The newest 8.5 patch; <code>8.5.12</code> an exact one</td></tr>
+    <tr><td><code>djoser install php 8.3.10 --unverified</code></td><td>An archived build with no published hash</td></tr>
+    <tr><td><code>djoser install node 22</code>, <code>composer latest</code>, <code>mysql 8.4</code></td><td>Any service the same way</td></tr>
+    <tr><td><code>djoser install php-ext redis</code></td><td>A PHP extension; inside a project also added to <code>djoser.yaml</code></td></tr>
+    <tr><td><code>djoser install caddy</code>, <code>heidisql</code>, <code>cloudflared</code>, <code>mongosh</code>, <code>mongodb-tools</code></td><td>A helper program ahead of time</td></tr>
+    <tr><td><code>djoser add php C:\php</code></td><td>Use a PHP already on this machine</td></tr>
+    <tr><td><code>djoser use php 8.5</code></td><td>Choose it for this project, written to <code>djoser.yaml</code></td></tr>
+    <tr><td><code>djoser use php 8.5 --env</code></td><td>The version used outside projects</td></tr>
+    <tr><td><code>djoser update php</code> / <code>update php --env</code></td><td>The newest patch of the line, such as 8.5.12 to 8.5.14</td></tr>
+    <tr><td><code>djoser runtimes</code></td><td>Everything installed</td></tr>
+    <tr><td><code>djoser uninstall php 8.5.12</code> / <code>-y</code></td><td>Remove a version; for a database server, offer a backup first</td></tr>
+  </table>
+</section>
+<section id="commands-djoser" data-search="commands doctor self-update engine services operations version">
+  <h3>Djoser itself</h3>
+  <table>
+    <tr><th>Command</th><th>What it does</th></tr>
+    <tr><td><code>djoser doctor</code></td><td>Check this machine, and whether a newer Djoser is out</td></tr>
+    <tr><td><code>djoser self-update</code> / <code>--check</code> / <code>-y</code></td><td>Install the newest release, checked against its SHA-256</td></tr>
+    <tr><td><code>djoser engine start</code> / <code>stop</code> / <code>status</code></td><td>The background service</td></tr>
+    <tr><td><code>djoser services</code></td><td>Every process Djoser runs</td></tr>
+    <tr><td><code>djoser operations</code> / <code>operations cancel &lt;id&gt;</code></td><td>Recent downloads, backups and checks</td></tr>
+    <tr><td><code>djoser -v</code></td><td>The version</td></tr>
+  </table>
+</section>
+<section id="sites" data-search="sites https trust aliases subdomain hosts share ports">
+  <h2>Sites and HTTPS</h2>
+  <p>Every project is served by Caddy at <code>https://&lt;domain&gt;</code> with a certificate from Djoser's local authority; <code>djoser trust</code> makes browsers accept it. <code>aliases: [www, api, "*"]</code> serves subdomains of the same project, so Laravel subdomain routes work.</p>
+  <p>Names under <code>.localhost</code> need no setup, and this page opens at <code>https://djoser.localhost</code> as well as <code>127.0.0.1</code> and <code>localhost</code>. When port 443 is taken, sites move to another port and <code>up</code> prints the address.</p>
+  <h3 id="hosts">Another domain: the hosts file</h3>
+  <p>Keep <code>.localhost</code> when you can. If a browser or tool will not open it, or you want <code>shop.test</code>, set <code>domain: shop.test</code> and add the name to Windows' <code>hosts</code> file; <code>up</code> prints the lines. Djoser never writes this file itself, since it needs administrator rights.</p>
+  <p>In PowerShell started with <b>Run as administrator</b>:</p>
+  <pre><code>Add-Content "$env:windir\System32\drivers\etc\hosts" "`n127.0.0.1 shop.test www.shop.test`n::1 shop.test www.shop.test"
+ipconfig /flushdns</code></pre>
+  <p>Or with Notepad: start it with <b>Run as administrator</b>, open <code>C:\Windows\System32\drivers\etc\hosts</code> (choose <i>All files</i>), add the lines at the end, and save:</p>
+  <pre><code>127.0.0.1 shop.test www.shop.test
+::1       shop.test www.shop.test</code></pre>
+  <p>The hosts file has no wildcards, so <code>aliases: ["*"]</code> works only under <code>.localhost</code>; list each subdomain instead. To undo, delete the lines and save.</p>
+</section>
+<section id="backups" data-search="databases backups backup restore">
+  <h2>Databases and backups</h2>
+  <p>Each project gets its own database on a shared server; <code>database:</code> picks another name. <code>djoser db backup</code> writes one file per database to <code>Documents\Djoser\Backups\&lt;project&gt;</code>, or the folder <code>backups:</code> names. Backups stay after Djoser is uninstalled, and Djoser never deletes them. <code>djoser db restore</code> backs up what is there first and waits for a typed <code>y</code>.</p>
+</section>
+<section id="workers" data-search="workers scripts startup stop start memory jobs">
+  <h2>Scripts and workers</h2>
+  <p><code>workers:</code> are the scripts <code>up</code> keeps running; they restart when they stop, and <code>down</code> ends them with what they started, such as Vite. Nothing runs until you list it. A stop with <code>djoser workers stop</code> lasts until the next <code>up</code>; <code>--save</code> writes <code>startup:</code> so the file decides from then on.</p>
+</section>
+<section id="deploy" data-search="deploy server ubuntu droplet digitalocean nginx certbot production deploy.sh">
+  <h2>Deploy to a server <span class="badge">experimental</span></h2>
+  <div class="note"><b>Experimental. You run this script at your own risk.</b> It is meant for someone who knows Linux and has read the script and changed it where needed before running it.</div>
+  <p><code>djoser deploy</code> writes one <code>deploy.sh</code> from <code>djoser.yaml</code>. Run as root on a fresh Ubuntu 24.04 or 26.04 server, such as a DigitalOcean Droplet, it prepares the server for this one project: a user, swap, the firewall, PHP from packages.sury.org with the project's extensions and settings, Node.js, the database servers on <code>127.0.0.1</code> with the project's database, Nginx with Let's Encrypt, and systemd units for the workers. Everything comes from apt, and each repository is trusted only after its key's fingerprint matches. It does not upload code, write <code>.env</code>, run migrations or start the workers; it prints those steps.</p>
+  <pre><code>djoser deploy                          <span class="c"># deploy.sh beside djoser.yaml; -y replaces one</span>
+ssh root@&lt;server-ip&gt; "mkdir -p /var/www"
+scp -r D:\Sites\shop root@&lt;server-ip&gt;:/var/www/shop      <span class="c"># the first time; later copy only what changed</span>
+ssh root@&lt;server-ip&gt; "bash /var/www/shop/deploy.sh --domain shop.com --email you@shop.com"</code></pre>
+  <p>Its variables are also flags: <code>--path</code>, <code>--user</code>, <code>--domain</code>, <code>--db-password</code>, <code>--email</code>, <code>--swap</code>, <code>--composer</code>, <code>--build</code>. Mail and S3 are yours to set. In git, keep it with LF endings: <code>*.sh text eol=lf</code> in <code>.gitattributes</code>.</p>
+</section>
+<section id="trouble" data-search="trouble problem error certificate port failed doctor">
+  <h2>When something is wrong</h2>
+  <table>
+    <tr><th>Sign</th><th>What to do</th></tr>
+    <tr><td>Browsers warn about the certificate</td><td><code>djoser trust</code>, then restart the browser</td></tr>
+    <tr><td>The address has a port such as <code>:8443</code></td><td>Another program has port 443; <code>djoser ports</code> shows which</td></tr>
+    <tr><td>A service shows <code>failed</code></td><td><code>djoser services</code> shows its last error</td></tr>
+    <tr><td>A worker keeps restarting</td><td><code>djoser logs &lt;worker&gt;</code></td></tr>
+    <tr><td>A <code>.localhost</code> name will not open in a browser or tool</td><td>Use another domain through the <a href="#hosts">hosts file</a></td></tr>
+    <tr><td>Laravel cannot reach the database</td><td><code>djoser env sync</code></td></tr>
+    <tr><td>Anything else</td><td><code>djoser doctor</code></td></tr>
+  </table>
+  <footer>Djoser 0.3.1 &middot; This page is served by Djoser on this machine only.</footer>
+</section>
+<p id="nothing" class="hidden">Nothing matches.</p>
+</main>
+</div>
+<script>
+(function () {
+  var root = document.documentElement;
+  try { var saved = localStorage.getItem("djoser-theme"); if (saved) root.setAttribute("data-theme", saved); } catch (e) {}
+  document.getElementById("theme").addEventListener("click", function () {
+    var dark = root.getAttribute("data-theme") === "dark" || (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    var next = dark ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("djoser-theme", next); } catch (e) {}
+  });
+  document.querySelectorAll("pre").forEach(function (block) {
+    var button = document.createElement("button");
+    button.className = "copy"; button.type = "button"; button.textContent = "Copy";
+    button.addEventListener("click", function () {
+      var text = block.querySelector("code").innerText.split("\n").map(function (line) { return line.replace(/\s+#.*$/, ""); }).join("\n").trim();
+      navigator.clipboard.writeText(text).then(function () { button.textContent = "Copied"; setTimeout(function () { button.textContent = "Copy"; }, 1500); });
+    });
+    block.appendChild(button);
+  });
+  var sections = Array.prototype.slice.call(document.querySelectorAll("main section"));
+  var links = Array.prototype.slice.call(document.querySelectorAll("nav a"));
+  document.getElementById("search").addEventListener("input", function (event) {
+    var query = event.target.value.trim().toLowerCase(), shown = 0;
+    sections.forEach(function (section) {
+      var match = !query || section.textContent.toLowerCase().indexOf(query) >= 0 || (section.getAttribute("data-search") || "").indexOf(query) >= 0;
+      section.classList.toggle("hidden", !match); if (match) shown++;
+    });
+    document.getElementById("nothing").classList.toggle("hidden", shown > 0);
+  });
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      links.forEach(function (link) { link.classList.toggle("active", link.getAttribute("href") === "#" + entry.target.id); });
+    });
+  }, { rootMargin: "-20% 0px -70% 0px" });
+  sections.forEach(function (section) { observer.observe(section); });
+})();
+</script>
+</body>
+</html>
