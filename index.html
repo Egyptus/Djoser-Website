@@ -1,77 +1,559 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Djoser</title>
+<title>Djoser — Native Windows Developer Environment for PHP, Laravel &amp; Node.js</title>
+<meta name="description" content="Djoser is a native, Windows-first developer environment manager for PHP and Laravel. Run per-project PHP and Node.js versions, local HTTPS sites, MySQL, MariaDB, PostgreSQL, MongoDB, Redis, RustFS (S3), Mailpit, and background workers from one command line — without Docker, WSL, or administrator rights.">
+<meta name="keywords" content="Djoser, PHP Windows, Laravel Windows environment, local HTTPS localhost, php-cgi supervisor, MySQL, MariaDB, PostgreSQL, MongoDB, Redis, RustFS S3, Mailpit, Node.js version manager Windows, Caddy Windows, EgyptusTech">
+<meta name="author" content="EgyptusTech">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://djoser.egyptustech.com/">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0a09" media="(prefers-color-scheme: dark)">
+
+<!-- Open Graph / Social -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://djoser.egyptustech.com/">
+<meta property="og:site_name" content="Djoser">
+<meta property="og:title" content="Djoser — Native Windows Developer Environment for PHP &amp; Laravel">
+<meta property="og:description" content="Each project gets its own PHP and Node.js version, local HTTPS site, databases (MySQL, MariaDB, PostgreSQL, MongoDB, Redis), S3 storage, mail inbox, and supervised workers on Windows — without Docker, WSL, or admin rights.">
+<meta property="og:image" content="https://raw.githubusercontent.com/Egyptus/Djoser/main/assets/overview.webp">
+<meta property="og:image:alt" content="Djoser: from djoser.yaml config to running local HTTPS services on Windows">
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://djoser.egyptustech.com/">
+<meta name="twitter:title" content="Djoser — Native Windows Developer Environment for PHP &amp; Laravel">
+<meta name="twitter:description" content="Per-project PHP &amp; Node.js, local HTTPS sites, databases, S3, mail, and supervised workers on Windows — without Docker, WSL, or administrator rights.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Egyptus/Djoser/main/assets/overview.webp">
+
+<!-- Inline SVG Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23FFB655' d='M424.5 418.5 213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9L2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h387.3c7.1 0 13.7-3.8 17.3-10 3.5-6.1 3.5-13.8-.1-19.9z'/%3E%3Cpath fill='%23EE8700' d='M361.7 73.4c-3.6-6.1-10.1-9.9-17.2-9.9s-13.6 3.8-17.2 9.9l-52.2 89.4 101.3 173.4h104c7.1 0 13.7-3.8 17.3-10 3.5-6.2 3.5-13.8-.1-19.9zM213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9l-91.1 156h108.3zM50.7 336.2 2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h193.7V336.2z'/%3E%3Cpath fill='%23FFE477' d='M213.6 242.7v93.5h162.8l-54.6-93.5z'/%3E%3C/svg%3E">
+
+<!-- Structured Data (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Djoser",
+      "url": "https://djoser.egyptustech.com/",
+      "headline": "Native, Windows-first developer environment manager for PHP, Laravel, and Node.js",
+      "description": "Each project gets its own PHP and Node.js runtime, local HTTPS site, databases (MySQL, MariaDB, PostgreSQL, MongoDB, Redis), S3 storage (RustFS), mail catcher (Mailpit), and supervised background workers on Windows without Docker, WSL, or administrator rights.",
+      "operatingSystem": "Windows 10, Windows 11 (x64)",
+      "applicationCategory": "DeveloperApplication",
+      "softwareVersion": "0.3.1",
+      "downloadUrl": "https://github.com/Egyptus/Djoser/releases/latest",
+      "releaseNotes": "https://github.com/Egyptus/Djoser/releases/tag/v0.3.1",
+      "image": "https://raw.githubusercontent.com/Egyptus/Djoser/main/assets/overview.webp",
+      "author": {
+        "@type": "Organization",
+        "name": "EgyptusTech",
+        "url": "https://www.egyptustech.com"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Per-project PHP versions, extensions, and php.ini settings",
+        "Per-project Node.js versions with .nvmrc and .node-version support",
+        "Automatic local HTTPS on *.localhost and subdomain aliases via Caddy",
+        "Managed MySQL, MariaDB, PostgreSQL, MongoDB, and Redis instances",
+        "Local S3-compatible storage (RustFS) with automatic project bucket creation",
+        "Local SMTP mail catching with Mailpit",
+        "Supervised background workers, queue monitoring, and failed job retries",
+        "Database backups and safe restores with pre-restore snapshots",
+        "Experimental Ubuntu 24.04/26.04 server deployment script generator (djoser deploy)"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does Djoser require Docker, WSL, or Windows Administrator rights?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Djoser runs native Windows binaries (php-cgi.exe, Caddy, MySQL, MariaDB, PostgreSQL, MongoDB, Redis, RustFS, Mailpit) under a background per-user Engine and installs for your Windows user account without administrator privileges."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can different projects use different PHP and database versions at the same time?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Each project defines its requirements in djoser.yaml. Djoser runs isolated PHP-CGI pools per version and extension set, and supports side-by-side versions of Node.js, MySQL, MariaDB, PostgreSQL, MongoDB, and Redis."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<!-- Early theme detection to prevent flash & set native dark scrollbars -->
+<script>
+(function () {
+  var root = document.documentElement;
+  try {
+    var saved = localStorage.getItem("djoser-theme");
+    if (saved === "dark" || saved === "light") {
+      root.setAttribute("data-theme", saved);
+    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      root.setAttribute("data-theme", "dark");
+    }
+  } catch (e) {}
+})();
+</script>
+
+<!-- Tailwind CSS CDN (with preflight disabled so our typography/spacing scale is never reset!) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  corePlugins: {
+    preflight: false,
+  },
+  darkMode: ['selector', '[data-theme="dark"]'],
+  theme: {
+    extend: {
+      colors: {
+        bg: 'var(--bg)',
+        side: 'var(--side)',
+        text: 'var(--text)',
+        muted: 'var(--muted)',
+        line: 'var(--line)',
+        brand: 'var(--brand)',
+        'brand-hover': 'var(--brand-hover)',
+        'brand-soft': 'var(--brand-soft)',
+        card: 'var(--card)',
+      }
+    }
+  }
+};
+</script>
+
+<!-- Highlight.js CDN for YAML syntax coloring -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js" defer></script>
+
 <style>
-:root{--bg:#ffffff;--side:#fafaf9;--text:#1c1917;--muted:#78716c;--line:#e7e5e4;--brand:#ee8700;--brand-soft:#fff4e5;--code:#1c1917;--code-text:#fafaf9;--card:#ffffff}
-:root[data-theme="dark"]{--bg:#0c0a09;--side:#141110;--text:#f5f5f4;--muted:#a8a29e;--line:#292524;--brand:#ffb655;--brand-soft:#2a1c08;--code:#1c1917;--code-text:#f5f5f4;--card:#141110}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c0a09;--side:#141110;--text:#f5f5f4;--muted:#a8a29e;--line:#292524;--brand:#ffb655;--brand-soft:#2a1c08;--code:#1c1917;--code-text:#f5f5f4;--card:#141110}}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:84px}
-body{margin:0;background:var(--bg);color:var(--text);font:16px/1.7 "Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:var(--brand);text-decoration:none}
-a:hover{text-decoration:underline}
-header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:16px;height:64px;padding:0 24px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;color:var(--text)}
-.brand svg{width:30px;height:30px}
-.badge{font-size:12px;font-weight:600;color:var(--brand);background:var(--brand-soft);border-radius:999px;padding:2px 10px}
-.search{margin-left:auto;position:relative}
-.search input{width:260px;max-width:42vw;font:inherit;font-size:14px;color:var(--text);background:var(--side);border:1px solid var(--line);border-radius:10px;padding:7px 12px}
-.search input:focus{outline:2px solid var(--brand);outline-offset:1px}
-.toggle{font:inherit;font-size:14px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:10px;padding:6px 10px;cursor:pointer}
-.layout{display:grid;grid-template-columns:270px minmax(0,1fr);max-width:1240px;margin:0 auto}
-nav{position:sticky;top:64px;height:calc(100vh - 64px);overflow:auto;padding:28px 20px 40px 24px;border-right:1px solid var(--line);background:var(--side)}
-nav h4{margin:22px 0 6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-nav h4:first-child{margin-top:0}
-nav a{display:block;padding:4px 10px;margin-left:-10px;border-radius:8px;color:var(--text);font-size:14.5px}
-nav a:hover{background:var(--brand-soft);text-decoration:none}
-nav a.active{color:var(--brand);font-weight:600;background:var(--brand-soft)}
-main{padding:40px 56px 96px;min-width:0}
-.hero{display:flex;gap:28px;align-items:center;padding:28px 32px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(135deg,var(--brand-soft),transparent 70%)}
-.hero svg{flex:none;width:88px;height:88px}
-.hero h1{margin:0;font-size:34px;line-height:1.2}
-.hero p{margin:8px 0 0;color:var(--muted)}
-.status{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:14px;font-weight:600;color:#15803d}
-.status::before{content:"";width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px color-mix(in srgb,#22c55e 25%,transparent)}
-section{padding-top:28px}
-h2{margin:36px 0 8px;font-size:26px;line-height:1.3;border-bottom:1px solid var(--line);padding-bottom:8px}
-h3{margin:26px 0 6px;font-size:18px}
-p{margin:10px 0}
-.lead{font-size:17px;color:var(--muted)}
-pre{position:relative;margin:14px 0;padding:16px 18px;background:var(--code);color:var(--code-text);border-radius:12px;overflow:auto;font:14px/1.6 "Cascadia Code","Cascadia Mono",Consolas,monospace}
-pre .copy{position:absolute;top:8px;right:8px;font:12px "Segoe UI",sans-serif;color:#d6d3d1;background:#292524;border:1px solid #44403c;border-radius:8px;padding:3px 9px;cursor:pointer;opacity:0;transition:opacity .15s}
-pre:hover .copy{opacity:1}
-code{font-family:"Cascadia Code","Cascadia Mono",Consolas,monospace;font-size:.9em}
-p code,td code,li code{background:var(--brand-soft);color:var(--text);padding:1px 6px;border-radius:6px}
-.c{color:#a8a29e}
-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:15px}
-th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-size:13px;color:var(--muted);font-weight:600}
-td:first-child{white-space:nowrap}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
-.card{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--text)}
-.card:hover{border-color:var(--brand);text-decoration:none}
-.card b{display:block;margin-bottom:4px}
-.card span{font-size:14px;color:var(--muted)}
-.note{margin:16px 0;padding:12px 16px;border-left:4px solid var(--brand);background:var(--brand-soft);border-radius:0 10px 10px 0;font-size:15px}
-.hidden{display:none}
-footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
-@media (max-width:900px){.layout{grid-template-columns:1fr}nav{display:none}main{padding:28px 16px 72px}.hero{flex-direction:column;align-items:flex-start}.search input{width:160px}.grid{grid-template-columns:1fr}}
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --side: #fafaf9;
+  --text: #1c1917;
+  --muted: #655e57;
+  --line: #e7e5e4;
+  --brand: #ee8700;
+  --brand-hover: #d47700;
+  --brand-soft: #fff4e5;
+  --code: #141210;
+  --code-border: #292524;
+  --code-text: #f5f5f4;
+  --card: #ffffff;
+  --scroll-track: #f5f5f4;
+  --scroll-thumb: #d6d3d1;
+  --scroll-thumb-hover: #a8a29e;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0c0a09;
+  --side: #141110;
+  --text: #f5f5f4;
+  --muted: #a8a29e;
+  --line: #262220;
+  --brand: #ffb655;
+  --brand-hover: #ffc475;
+  --brand-soft: #2a1c08;
+  --code: #151210;
+  --code-border: #292524;
+  --code-text: #f5f5f4;
+  --card: #141110;
+  --scroll-track: #141110;
+  --scroll-thumb: #38322e;
+  --scroll-thumb-hover: #57534e;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0c0a09;
+    --side: #141110;
+    --text: #f5f5f4;
+    --muted: #a8a29e;
+    --line: #262220;
+    --brand: #ffb655;
+    --brand-hover: #ffc475;
+    --brand-soft: #2a1c08;
+    --code: #151210;
+    --code-border: #292524;
+    --code-text: #f5f5f4;
+    --card: #141110;
+    --scroll-track: #141110;
+    --scroll-thumb: #38322e;
+    --scroll-thumb-hover: #57534e;
+  }
+}
+
+* { box-sizing: border-box; }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.75 "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Dark/Light Scrollbars for Sidebar, Code blocks, and Page */
+nav, pre {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scroll-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 999px;
+  border: 2px solid var(--scroll-track);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scroll-thumb-hover);
+}
+
+a { color: var(--brand); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.skip-link {
+  position: absolute;
+  top: -48px;
+  left: 16px;
+  z-index: 100;
+  background: var(--brand);
+  color: #0c0a09;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: top .15s;
+}
+.skip-link:focus { top: 10px; text-decoration: none; }
+
+/* Full-width layout with balanced proportions */
+.layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  width: 100%;
+  margin: 0;
+}
+
+/* Sidebar Navigation */
+nav {
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  padding: 28px 22px 48px 26px;
+  border-right: 1px solid var(--line);
+  background: var(--side);
+}
+nav h4 {
+  margin: 26px 0 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+nav h4:first-child { margin-top: 0; }
+nav a {
+  display: block;
+  padding: 6px 12px;
+  margin: 2px 0 2px -12px;
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 14.5px;
+  line-height: 1.45;
+  transition: background .12s, color .12s;
+}
+nav a:hover { background: var(--brand-soft); text-decoration: none; }
+nav a.active { color: var(--brand); font-weight: 600; background: var(--brand-soft); }
+
+/* Main Content Area & Spacing Rhythm */
+main {
+  padding: 40px 56px 104px;
+  min-width: 0;
+  width: 100%;
+}
+
+section {
+  padding-top: 36px;
+  margin-top: 12px;
+}
+section:first-child {
+  padding-top: 0;
+  margin-top: 0;
+}
+
+h2 {
+  margin: 24px 0 16px;
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 12px;
+  color: var(--text);
+}
+h3 {
+  margin: 34px 0 12px;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text);
+}
+p {
+  margin: 14px 0 16px;
+  line-height: 1.75;
+}
+.lead {
+  font-size: 17.5px;
+  line-height: 1.75;
+  color: var(--muted);
+  margin: 12px 0 22px;
+}
+
+/* Code Blocks & YAML/CLI Syntax Highlighting */
+pre {
+  position: relative;
+  margin: 16px 0 22px;
+  padding: 20px 24px;
+  background: var(--code);
+  color: var(--code-text);
+  border: 1px solid var(--code-border);
+  border-radius: 14px;
+  overflow: auto;
+  font: 14px/1.7 "Cascadia Code", "Cascadia Mono", Consolas, monospace;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+pre code {
+  font-family: inherit;
+  font-size: inherit;
+  background: transparent !important;
+  padding: 0 !important;
+  color: inherit;
+}
+pre .code-toolbar {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+pre .lang-tag {
+  font: 600 11px/1 "Segoe UI", system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: #a8a29e;
+  background: #1c1917;
+  border: 1px solid #292524;
+  border-radius: 6px;
+  padding: 5px 9px;
+  user-select: none;
+}
+pre .lang-tag.is-yaml {
+  color: #ffb655;
+  background: #2a1c08;
+  border-color: #4a300d;
+  text-transform: none;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 11.5px;
+}
+pre .copy {
+  font: 600 12px/1 "Segoe UI", system-ui, sans-serif;
+  color: #e7e5e4;
+  background: #292524;
+  border: 1px solid #44403c;
+  border-radius: 7px;
+  padding: 5px 11px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .15s, border-color .15s, background .15s;
+}
+pre .copy:hover {
+  border-color: #ffb655;
+  background: #38322e;
+}
+pre:hover .copy, pre:focus-within .copy, pre .copy:focus-visible { opacity: 1; }
+@media (hover: none) { pre .copy { opacity: 1; } }
+
+p code, td code, li code, .card code {
+  font-family: "Cascadia Code", "Cascadia Mono", Consolas, monospace;
+  font-size: .88em;
+  background: var(--brand-soft);
+  color: var(--text);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+/* Highlight.js YAML & Custom CLI Token Palette */
+.hljs { color: #f5f5f4; background: transparent; }
+.hljs-attr, .hljs-attribute, .hljs-variable, .hljs-template-variable, .tok-key {
+  color: #ffb655; /* Djoser gold for YAML keys & env keys */
+  font-weight: 600;
+}
+.hljs-string, .hljs-regexp, .hljs-addition, .tok-str {
+  color: #86efac; /* Soft emerald green for YAML strings */
+}
+.hljs-number, .tok-num {
+  color: #38bdf8; /* Sky cyan for versions, ports & numbers */
+}
+.hljs-literal, .hljs-keyword, .hljs-selector-tag, .hljs-doctag, .tok-bool {
+  color: #c084fc; /* Purple for true/false/null */
+  font-weight: 600;
+}
+.hljs-bullet, .hljs-symbol, .hljs-meta, .hljs-punctuation {
+  color: #fb923c; /* Warm orange for YAML list dashes & brackets */
+}
+.c, .hljs-comment, .hljs-quote, .tok-comment {
+  color: #8a837e;
+  font-style: italic;
+}
+.tok-cmd {
+  color: #ffb655;
+  font-weight: 600;
+}
+.tok-sub {
+  color: #fdba74;
+}
+.tok-flag {
+  color: #67e8f9;
+}
+
+/* Tables with clean borders, spacing & hover */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 18px 0 26px;
+  font-size: 15px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+th, td {
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  line-height: 1.6;
+}
+tr:last-child td {
+  border-bottom: none;
+}
+tbody tr:hover td {
+  background: color-mix(in srgb, var(--side) 55%, transparent);
+}
+th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--muted);
+  font-weight: 700;
+  background: var(--side);
+}
+td:first-child { white-space: nowrap; }
+
+.note {
+  margin: 20px 0 24px;
+  padding: 16px 20px;
+  border-left: 4px solid var(--brand);
+  background: var(--brand-soft);
+  border-radius: 0 12px 12px 0;
+  font-size: 15.5px;
+  line-height: 1.7;
+}
+.hidden { display: none !important; }
+
+/* Theme Toggle Sun / Moon Icons */
+.icon-sun { display: none; }
+.icon-moon { display: block; }
+:root[data-theme="dark"] .icon-sun { display: block; }
+:root[data-theme="dark"] .icon-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .icon-sun { display: block; }
+  :root:not([data-theme="light"]) .icon-moon { display: none; }
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  nav {
+    display: none;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: auto;
+    z-index: 30;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+  nav.open { display: block; }
+  main { padding: 24px 16px 72px; }
+  table { display: block; overflow-x: auto; }
+}
 </style>
 </head>
-<body>
-<header>
-  <a class="brand" href="#welcome"><svg viewBox="0 0 512 512" aria-hidden="true"><path fill="#FFB655" d="M424.5 418.5 213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9L2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h387.3c7.1 0 13.7-3.8 17.3-10 3.5-6.1 3.5-13.8-.1-19.9z"/><path fill="#EE8700" d="M361.7 73.4c-3.6-6.1-10.1-9.9-17.2-9.9s-13.6 3.8-17.2 9.9l-52.2 89.4 101.3 173.4h104c7.1 0 13.7-3.8 17.3-10 3.5-6.2 3.5-13.8-.1-19.9zM213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9l-91.1 156h108.3zM50.7 336.2 2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h193.7V336.2z"/><path fill="#FFE477" d="M213.6 242.7v93.5h162.8l-54.6-93.5z"/></svg>Djoser</a>
-  <span class="badge">0.3.1</span>
-  <div class="search"><input id="search" type="search" placeholder="Search commands..." aria-label="Search commands"></div>
-  <button class="toggle" id="theme" type="button" aria-label="Switch light and dark">Theme</button>
+<body class="bg-bg text-text">
+<a class="skip-link" href="#content">Skip to main content</a>
+
+<header class="sticky top-0 z-20 flex items-center gap-3 h-16 px-4 lg:px-7 border-b border-line backdrop-blur-md" style="background:color-mix(in srgb,var(--bg) 88%,transparent)">
+  <button class="lg:hidden inline-flex items-center justify-center text-sm text-text bg-transparent border border-line rounded-lg px-3 py-1.5 cursor-pointer hover:border-brand" id="menu-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Toggle navigation menu">Menu</button>
+  <a class="flex items-center gap-2.5 font-bold text-[19px] text-text hover:no-underline" href="#welcome">
+    <svg class="w-[30px] h-[30px] shrink-0" viewBox="0 0 512 512" aria-hidden="true"><path fill="#FFB655" d="M424.5 418.5 213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9L2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h387.3c7.1 0 13.7-3.8 17.3-10 3.5-6.1 3.5-13.8-.1-19.9z"/><path fill="#EE8700" d="M361.7 73.4c-3.6-6.1-10.1-9.9-17.2-9.9s-13.6 3.8-17.2 9.9l-52.2 89.4 101.3 173.4h104c7.1 0 13.7-3.8 17.3-10 3.5-6.2 3.5-13.8-.1-19.9zM213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9l-91.1 156h108.3zM50.7 336.2 2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h193.7V336.2z"/><path fill="#FFE477" d="M213.6 242.7v93.5h162.8l-54.6-93.5z"/></svg>
+    <span>Djoser</span>
+  </a>
+  <span class="text-xs font-semibold text-brand bg-brand-soft rounded-full px-2.5 py-0.5 whitespace-nowrap">v0.3.1</span>
+
+  <div class="ml-auto relative">
+    <input id="search" type="search" placeholder="Search commands &amp; docs... (/)" aria-label="Search commands and documentation" class="w-40 sm:w-64 md:w-72 text-sm text-text bg-side border border-line rounded-lg px-3.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand">
+  </div>
+
+  <div class="flex items-center gap-2">
+    <a class="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-text bg-card border border-line rounded-lg px-3.5 py-1.5 hover:border-brand hover:no-underline transition-colors" href="https://github.com/Egyptus/Djoser" target="_blank" rel="noopener noreferrer">
+      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"/></svg>
+      <span>GitHub</span>
+    </a>
+    <a class="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0c0a09] bg-brand border border-brand rounded-lg px-3.5 py-1.5 hover:bg-brand-hover hover:no-underline transition-colors" href="https://github.com/Egyptus/Djoser/releases/latest" target="_blank" rel="noopener noreferrer">
+      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span>Download</span>
+    </a>
+  </div>
+  <button class="inline-flex items-center justify-center w-9 h-9 text-muted bg-transparent border border-line rounded-lg cursor-pointer hover:border-brand hover:text-brand transition-colors" id="theme" type="button" aria-label="Switch light and dark theme" title="Switch light and dark theme">
+    <svg class="icon-sun w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+    <svg class="icon-moon w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+  </button>
 </header>
+
 <div class="layout">
-<nav id="menu">
+<nav id="menu" aria-label="Documentation sections">
   <h4>Getting started</h4>
-  <a href="#welcome">Welcome</a>
+  <a href="#welcome">Overview</a>
+  <a href="#install">Why Djoser &amp; Install</a>
   <a href="#laravel">A Laravel project from zero</a>
   <h4>djoser.yaml</h4>
   <a href="#yaml">Every key</a>
@@ -94,51 +576,84 @@ footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);font-si
   <a href="#backups">Databases and backups</a>
   <a href="#workers">Scripts and workers</a>
   <a href="#deploy">Deploy to a server</a>
+  <a href="#what-runs">What runs today</a>
   <a href="#trouble">When something is wrong</a>
 </nav>
+
 <main id="content">
-<section id="welcome" data-search="welcome djoser running engine">
-  <div class="hero">
-    <svg viewBox="0 0 512 512" aria-hidden="true"><path fill="#FFB655" d="M424.5 418.5 213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9L2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h387.3c7.1 0 13.7-3.8 17.3-10 3.5-6.1 3.5-13.8-.1-19.9z"/><path fill="#EE8700" d="M361.7 73.4c-3.6-6.1-10.1-9.9-17.2-9.9s-13.6 3.8-17.2 9.9l-52.2 89.4 101.3 173.4h104c7.1 0 13.7-3.8 17.3-10 3.5-6.2 3.5-13.8-.1-19.9zM213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9l-91.1 156h108.3zM50.7 336.2 2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h193.7V336.2z"/><path fill="#FFE477" d="M213.6 242.7v93.5h162.8l-54.6-93.5z"/></svg>
+<section id="welcome" data-search="welcome djoser overview download windows php laravel node">
+  <div class="flex flex-col md:flex-row gap-7 items-start p-7 md:p-9 border border-line rounded-2xl" style="background:linear-gradient(135deg,var(--brand-soft),transparent 70%)">
+    <svg class="w-16 h-16 md:w-[88px] md:h-[88px] shrink-0 mt-1" viewBox="0 0 512 512" aria-hidden="true"><path fill="#FFB655" d="M424.5 418.5 213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9L2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h387.3c7.1 0 13.7-3.8 17.3-10 3.5-6.1 3.5-13.8-.1-19.9z"/><path fill="#EE8700" d="M361.7 73.4c-3.6-6.1-10.1-9.9-17.2-9.9s-13.6 3.8-17.2 9.9l-52.2 89.4 101.3 173.4h104c7.1 0 13.7-3.8 17.3-10 3.5-6.2 3.5-13.8-.1-19.9zM213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9l-91.1 156h108.3zM50.7 336.2 2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h193.7V336.2z"/><path fill="#FFE477" d="M213.6 242.7v93.5h162.8l-54.6-93.5z"/></svg>
     <div>
-      <h1>Welcome to Djoser</h1>
-      <p>A native Windows home for PHP and Laravel: each project's own PHP and Node.js, local HTTPS sites, databases, S3, mail and background workers, from one command line.</p>      
+      <h1 class="m-0 text-2xl md:text-[34px] font-bold leading-tight">Djoser — A Native Windows Home for PHP &amp; Laravel</h1>
+      <p class="mt-3 mb-0 text-muted text-[17px] leading-relaxed">Each project gets its own PHP and Node.js version, local HTTPS site, databases (MySQL, MariaDB, PostgreSQL, MongoDB, Redis), S3 storage, mail inbox and supervised background workers — from one command line, without Docker, WSL or touching the PHP already on your machine.</p>
+      <div class="flex flex-wrap items-center gap-3.5 mt-6">
+        <a class="inline-flex items-center gap-2 text-[15px] font-semibold text-[#0c0a09] bg-brand border border-brand rounded-xl px-5 py-2.5 hover:bg-brand-hover hover:no-underline transition-colors" href="https://github.com/Egyptus/Djoser/releases/latest" target="_blank" rel="noopener noreferrer">
+          <svg class="w-[18px] h-[18px] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Download for Windows (x64)</span>
+        </a>
+        <a class="inline-flex items-center gap-2 text-[15px] font-semibold text-text bg-card border border-line rounded-xl px-5 py-2.5 hover:border-brand hover:no-underline transition-colors" href="https://github.com/Egyptus/Djoser" target="_blank" rel="noopener noreferrer">
+          <svg class="w-[18px] h-[18px] shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"/></svg>
+          <span>View on GitHub</span>
+        </a>
+        <span class="text-[13.5px] text-muted">Windows 10 &amp; 11 &middot; Native C++23 &middot; No Administrator Rights</span>
+      </div>
     </div>
   </div>
-  <div class="grid">
-    <a class="card" href="#laravel"><b>A Laravel project from zero</b><span>From an empty folder to PHP, MySQL, Redis, S3, mail and workers.</span></a>
-    <a class="card" href="#yaml"><b>djoser.yaml, every key</b><span>One file says what a project needs.</span></a>
-    <a class="card" href="#commands"><b>Every command</b><span>Each command with every way to use it.</span></a>
-    <a class="card" href="#example-laravel"><b>Examples</b><span>A large Laravel app, Next.js and a plain page.</span></a>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 my-6">
+    <a class="card block p-5 border border-line rounded-xl bg-card text-text hover:border-brand hover:no-underline transition-colors" href="#install"><b class="block mb-1.5 text-[16px]">Why Djoser &amp; Install</b><span class="text-sm text-muted leading-relaxed block">Per-user setup, zero admin rights, and how Djoser keeps your projects isolated.</span></a>
+    <a class="card block p-5 border border-line rounded-xl bg-card text-text hover:border-brand hover:no-underline transition-colors" href="#laravel"><b class="block mb-1.5 text-[16px]">A Laravel project from zero</b><span class="text-sm text-muted leading-relaxed block">From an empty folder to PHP, MySQL, Redis, S3, mail and workers in 8 steps.</span></a>
+    <a class="card block p-5 border border-line rounded-xl bg-card text-text hover:border-brand hover:no-underline transition-colors" href="#yaml"><b class="block mb-1.5 text-[16px]">djoser.yaml, every key</b><span class="text-sm text-muted leading-relaxed block">One file describes what a project needs, and <code>djoser up</code> makes it true.</span></a>
+    <a class="card block p-5 border border-line rounded-xl bg-card text-text hover:border-brand hover:no-underline transition-colors" href="#commands"><b class="block mb-1.5 text-[16px]">Every command &amp; examples</b><span class="text-sm text-muted leading-relaxed block">Complete CLI reference, large Laravel apps, Next.js, and Ubuntu server deployment.</span></a>
   </div>
+</section>
+
+<section id="install" data-search="why djoser install setup download path self-update windows">
+  <h2>Why Djoser &amp; Install</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-5">
+    <div class="card p-5 border border-line rounded-xl bg-card"><b class="block mb-1.5 text-[16px]">One file per project</b><span class="text-sm text-muted leading-relaxed block"><code>djoser.yaml</code> says what a project needs, and <code>djoser up</code> downloads what is missing and starts it.</span></div>
+    <div class="card p-5 border border-line rounded-xl bg-card"><b class="block mb-1.5 text-[16px]">Versions side by side</b><span class="text-sm text-muted leading-relaxed block">Every project uses its own PHP, extensions, <code>php.ini</code>, Node.js, MySQL, MariaDB, PostgreSQL or MongoDB version.</span></div>
+    <div class="card p-5 border border-line rounded-xl bg-card"><b class="block mb-1.5 text-[16px]">Real local HTTPS</b><span class="text-sm text-muted leading-relaxed block">Each project gets its own <code>https://name.localhost</code> address and subdomain aliases, served by Caddy.</span></div>
+    <div class="card p-5 border border-line rounded-xl bg-card"><b class="block mb-1.5 text-[16px]">Workers that stay up</b><span class="text-sm text-muted leading-relaxed block">Queue workers, the scheduler and <code>npm run dev</code> run under the Supervisor, restart on crash, and stop cleanly as a process tree.</span></div>
+    <div class="card p-5 border border-line rounded-xl bg-card"><b class="block mb-1.5 text-[16px]">No administrator rights</b><span class="text-sm text-muted leading-relaxed block">Djoser installs for your Windows user only, and everything it downloads stays inside one folder.</span></div>
+    <div class="card p-5 border border-line rounded-xl bg-card"><b class="block mb-1.5 text-[16px]">Your data stays safe</b><span class="text-sm text-muted leading-relaxed block"><code>down</code>, <code>remove</code> and <code>uninstall</code> never delete a database, and backups live outside Djoser.</span></div>
+  </div>
+  <h3>Install on Windows</h3>
+  <p>Download <code>Djoser-Setup-x64-0.3.1.exe</code> from the <a href="https://github.com/Egyptus/Djoser/releases/latest" target="_blank" rel="noopener noreferrer">latest GitHub release</a> and run it. It installs for your user without administrator rights and offers two options:</p>
+  <table>
+    <tr><th>Installer Option</th><th>Default</th><th>What it does</th></tr>
+    <tr><td>Add Djoser to <code>PATH</code></td><td>On</td><td><code>djoser</code> works in any new terminal</td></tr>
+    <tr><td>Add the tools to <code>PATH</code></td><td>Off</td><td><code>php</code>, <code>composer</code>, <code>node</code>, <code>npm</code>, <code>npx</code>, <code>mysql</code>, <code>mariadb</code>, <code>psql</code>, <code>mongosh</code> and <code>redis-cli</code> work directly in any terminal using each project's versions</td></tr>
+  </table>
+  <p>To update later, run <code>djoser self-update</code> (which verifies both GitHub's digest and the release notes' SHA-256 before running the installer) or run the new installer yourself. Either way Djoser stops the Engine first and keeps your projects and databases.</p>
 </section>
 
 <section id="laravel" data-search="laravel walkthrough install create init up env sync migrate workers">
   <h2>A Laravel project from zero</h2>
   <p class="lead">From an empty folder to a site with PHP, MySQL, Redis, S3 storage, a mail inbox, queue workers, the scheduler and Vite. For a project you already have, start at step 3 inside its folder.</p>
   <h3>1. Get PHP, Composer and Node.js</h3>
-  <pre><code>djoser list php                    <span class="c"># the PHP versions you can install</span>
-djoser install php 8.5             <span class="c"># the newest 8.5 patch, checked against its published hash</span>
+  <pre data-lang="terminal"><code class="language-cli">djoser list php                    # the PHP versions you can install
+djoser install php 8.5             # the newest 8.5 patch, checked against its published hash
 djoser install composer latest
 djoser install node 22
-djoser use php 8.5 --env           <span class="c"># the PHP used outside projects (optional)</span>
-djoser runtimes                    <span class="c"># what is installed now</span></code></pre>
+djoser use php 8.5 --env           # the PHP used outside projects (optional)
+djoser runtimes                    # what is installed now</code></pre>
   <p>The first version of each you install becomes the default outside projects by itself.</p>
   <h3>2. Create the project</h3>
-  <pre><code>cd D:\Sites
+  <pre data-lang="terminal"><code class="language-cli">cd D:\Sites
 djoser composer create-project laravel/laravel shop
 cd shop</code></pre>
   <h3>3. Describe it</h3>
-  <pre><code>djoser init                        <span class="c"># asks, with the Laravel answers filled in</span>
+  <pre data-lang="terminal"><code class="language-cli">djoser init                        # asks, with the Laravel answers filled in
 djoser init --name shop --domain shop.localhost --root public --php 8.5 -y</code></pre>
   <p><code>init</code> writes <code>djoser.yaml</code> with four PHP settings and six scripts. Add the services the project needs:</p>
-  <pre><code>name: shop
+  <pre data-lang="djoser.yaml"><code class="language-yaml">name: shop
 domain: shop.localhost
 web-root: public
 services:
   php:
     version: 8.5
-    extensions: [redis]          <span class="c"># the PHP extension that talks to Redis</span>
+    extensions: [redis]          # the PHP extension that talks to Redis
     ini:
       memory_limit: 512M
       upload_max_filesize: 64M
@@ -146,9 +661,9 @@ services:
   mysql:
     version: 8.4
     database: shop
-  redis: 8.4                     <span class="c"># the Redis server itself</span>
-  rustfs: 1.0                    <span class="c"># S3 storage, with a bucket named shop</span>
-  mailpit: 1.33                  <span class="c"># every mail the app sends lands here</span>
+  redis: 8.4                     # the Redis server itself
+  rustfs: 1.0                    # S3 storage, with a bucket named shop
+  mailpit: 1.33                  # every mail the app sends lands here
 scripts:
   queue: php artisan queue:work --memory=512 --max-time=3600
   schedule: php artisan schedule:work
@@ -158,48 +673,49 @@ workers:
   - queue: 2
   - schedule
   - dev:
-      startup: false             <span class="c"># start it when you want it</span></code></pre>
+      startup: false             # start it when you want it</code></pre>
   <h3>4. Start it</h3>
-  <pre><code>djoser up</code></pre>
+  <pre data-lang="terminal"><code class="language-cli">djoser up</code></pre>
   <p>The first run downloads what is missing, starts it, and offers to trust the local certificate. It ends with the address and how to reach each service: MySQL on <code>127.0.0.1:3306</code> as <code>root</code> with no password, Redis on <code>6379</code>, the S3 server on <code>9000</code> with its console, and the mail inbox at <code>http://127.0.0.1:8025</code>.</p>
   <h3>5. Connect Laravel</h3>
-  <pre><code>djoser env sync</code></pre>
+  <pre data-lang="terminal"><code class="language-cli">djoser env sync</code></pre>
   <p>Djoser compares <code>.env</code> with what it runs (<code>DB_*</code>, <code>REDIS_*</code>, <code>MAIL_*</code>, <code>AWS_*</code>, <code>APP_URL</code>) and shows each difference as the line you have and the line it expects. It changes the file only after you type <code>y</code>. Then choose what Laravel uses them for:</p>
-  <pre><code>CACHE_STORE=redis
+  <pre data-lang=".env"><code class="language-env">CACHE_STORE=redis
 QUEUE_CONNECTION=redis
 SESSION_DRIVER=redis
 REDIS_PREFIX=shop_
 FILESYSTEM_DISK=s3</code></pre>
   <h3>6. Prepare the app</h3>
-  <pre><code>djoser composer require league/flysystem-aws-s3-v3
+  <pre data-lang="terminal"><code class="language-cli">djoser composer require league/flysystem-aws-s3-v3
 djoser artisan migrate
 djoser artisan storage:link
 djoser npm install
 djoser run build</code></pre>
   <p>Open <code>https://shop.localhost</code>.</p>
   <h3>7. Watch it run</h3>
-  <pre><code>djoser status -w                   <span class="c"># services, workers, memory, failed jobs, redrawn</span>
-djoser workers start dev           <span class="c"># Vite, for hot reload while you work</span>
+  <pre data-lang="terminal"><code class="language-cli">djoser status -w                   # services, workers, memory, failed jobs, redrawn
+djoser workers start dev           # Vite, for hot reload while you work
 djoser logs queue -f
 djoser jobs
 djoser jobs retry all
-djoser tool db                     <span class="c"># HeidiSQL on the shop database</span></code></pre>
+djoser tool db                     # HeidiSQL on the shop database</code></pre>
   <h3>8. Keep it safe and share it</h3>
-  <pre><code>djoser db backup                   <span class="c"># Documents\Djoser\Backups\shop</span>
-djoser share                       <span class="c"># a temporary public address, until Ctrl+C</span>
+  <pre data-lang="terminal"><code class="language-cli">djoser db backup                   # Documents\Djoser\Backups\shop
+djoser share                       # a temporary public address, until Ctrl+C
 djoser down</code></pre>
 </section>
+
 <section id="yaml" data-search="djoser.yaml yaml keys name domain aliases web-root tls backups">
   <h2>djoser.yaml, every key</h2>
   <p>Edit the file and run <code>djoser up</code>; <code>djoser status</code> says when it changed since the last <code>up</code>. Write only what you need: <code>mysql: 8.4</code> alone is enough. A key with no effect is reported by <code>up</code>, and an unknown one is a warning.</p>
-  <pre><code>name: shop                     <span class="c"># default: the folder's name</span>
-domain: shop.localhost         <span class="c"># default: &lt;name&gt;.localhost</span>
-aliases: [www, api]            <span class="c"># more subdomains; "*" serves any</span>
-web-root: public               <span class="c"># default: public for Laravel, else the folder with index.php or index.html</span>
-tls:                           <span class="c"># default: Djoser's local certificate</span>
+  <pre data-lang="djoser.yaml"><code class="language-yaml">name: shop                     # default: the folder's name
+domain: shop.localhost         # default: &lt;name&gt;.localhost
+aliases: [www, api]            # more subdomains; "*" serves any
+web-root: public               # default: public for Laravel, else the folder with index.php or index.html
+tls:                           # default: Djoser's local certificate
   cert: certs/shop.pem
   key: certs/shop-key.pem
-backups: D:/Backups/shop       <span class="c"># default: Documents\Djoser\Backups\&lt;name&gt;</span>
+backups: D:/Backups/shop       # default: Documents\Djoser\Backups\&lt;name&gt;
 services:
 scripts:
 workers:</code></pre>
@@ -209,80 +725,81 @@ workers:</code></pre>
 <section id="yaml-services" data-search="services php node mysql mariadb postgres mongodb redis rustfs mailpit settings extensions ini port data dedicated database bucket">
   <h2>Services</h2>
   <h3>php</h3>
-  <pre><code>php:
+  <pre data-lang="djoser.yaml"><code class="language-yaml">php:
   version: 8.5
-  extensions: [redis, xdebug]    <span class="c"># djoser list extensions</span>
-  ini:                           <span class="c"># any php.ini setting but the extension ones and the CA bundle</span>
+  extensions: [redis, xdebug]    # djoser list extensions
+  ini:                           # any php.ini setting but the extension ones and the CA bundle
     memory_limit: 512M
     upload_max_filesize: 64M
     post_max_size: 64M
     max_execution_time: 120</code></pre>
   <h3>node</h3>
-  <pre><code>node: 22                       <span class="c"># without it: .nvmrc, then .node-version (22, v22.11.0, lts/*, lts/iron, node)</span></code></pre>
+  <pre data-lang="djoser.yaml"><code class="language-yaml">node: 22                       # without it: .nvmrc, then .node-version (22, v22.11.0, lts/*, lts/iron, node)</code></pre>
   <h3>mysql and mariadb</h3>
-  <pre><code>mysql:                         <span class="c"># or mariadb:</span>
-  version: 8.4                 <span class="c"># mysql 8.0, 8.4, 9.7; mariadb 10.11, 11.4, 11.8, 12.3, 13.0</span>
-  database: shop               <span class="c"># default: the project's name, - becomes _</span>
-  port: 3306                   <span class="c"># default: shared server from 3306</span>
-  data: D:/Data/shop-mysql     <span class="c"># the folder must exist</span>
+  <pre data-lang="djoser.yaml"><code class="language-yaml">mysql:                         # or mariadb:
+  version: 8.4                 # mysql 8.0, 8.4, 9.7; mariadb 10.11, 11.4, 11.8, 12.3, 13.0
+  database: shop               # default: the project's name, - becomes _
+  port: 3306                   # default: shared server from 3306
+  data: D:/Data/shop-mysql     # the folder must exist
   dedicated: true
-  settings:                    <span class="c"># --name=value</span>
+  settings:                    # --name=value
     max_connections: 500
     innodb_buffer_pool_size: 512M</code></pre>
   <p>User <code>root</code>, no password. Djoser sets <code>datadir</code>, <code>port</code>, <code>bind_address</code>, <code>socket</code>, <code>console</code>, <code>mysqlx</code> and <code>no_defaults</code> itself.</p>
   <h3>postgres</h3>
-  <pre><code>postgres:
-  version: 17                  <span class="c"># 15, 16, 17, 18</span>
+  <pre data-lang="djoser.yaml"><code class="language-yaml">postgres:
+  version: 17                  # 15, 16, 17, 18
   database: shop
   port: 5432
-  settings:                    <span class="c"># -c name=value</span>
+  settings:                    # -c name=value
     shared_buffers: 256MB
     work_mem: 16MB</code></pre>
   <p>User <code>postgres</code>, no password; <code>env sync</code> sets <code>DB_CONNECTION=pgsql</code>.</p>
   <h3>mongodb</h3>
-  <pre><code>mongodb:
-  version: 8.0                 <span class="c"># 7.0, 8.0, 8.2, 8.3; mongosh comes with it</span>
-  database: shop               <span class="c"># made on first write</span>
+  <pre data-lang="djoser.yaml"><code class="language-yaml">mongodb:
+  version: 8.0                 # 7.0, 8.0, 8.2, 8.3; mongosh comes with it
+  database: shop               # made on first write
   port: 27017
-  settings:                    <span class="c"># --name value</span>
+  settings:                    # --name value
     wiredTigerCacheSizeGB: 1</code></pre>
   <p>For Laravel, the <code>mongodb</code> PHP extension and <code>mongodb/laravel-mongodb</code>; <code>env sync</code> sets <code>MONGODB_URI</code> and <code>MONGODB_DATABASE</code>.</p>
   <h3>redis</h3>
-  <pre><code>redis:
-  version: 8.4                 <span class="c"># 7.2, 7.4, 8.4, 8.10</span>
+  <pre data-lang="djoser.yaml"><code class="language-yaml">redis:
+  version: 8.4                 # 7.2, 7.4, 8.4, 8.10
   port: 6379
-  settings:                    <span class="c"># --name value</span>
+  settings:                    # --name value
     maxmemory: 256mb
     maxmemory-policy: allkeys-lru</code></pre>
   <p>Projects sharing a server share keys: give each its own <code>REDIS_PREFIX</code>.</p>
   <h3>rustfs</h3>
-  <pre><code>rustfs:
+  <pre data-lang="djoser.yaml"><code class="language-yaml">rustfs:
   version: 1.0
-  bucket: shop                 <span class="c"># default: the project's name</span>
-  port: 9000                   <span class="c"># the console takes the next free port</span>
-  settings:                    <span class="c"># RUSTFS_&lt;NAME&gt; environment variables</span>
+  bucket: shop                 # default: the project's name
+  port: 9000                   # the console takes the next free port
+  settings:                    # RUSTFS_&lt;NAME&gt; environment variables
     access_key: rustfsadmin
     secret_key: rustfsadmin</code></pre>
   <h3>mailpit</h3>
-  <pre><code>mailpit:
+  <pre data-lang="djoser.yaml"><code class="language-yaml">mailpit:
   version: 1.33
-  port: 1025                   <span class="c"># SMTP; the inbox is on 8025</span>
+  port: 1025                   # SMTP; the inbox is on 8025
   settings:
     max: 2000</code></pre>
   <p><code>settings</code> gives the project its own server, and changing them restarts it at the next <code>up</code>.</p>
 </section>
+
 <section id="yaml-scripts" data-search="scripts workers startup count args shell">
   <h2>Scripts and workers in djoser.yaml</h2>
-  <pre><code>scripts:
+  <pre data-lang="djoser.yaml"><code class="language-yaml">scripts:
   queue: php artisan queue:work --memory=512 --max-time=3600
-  test: php artisan test {args}             <span class="c"># arguments go where {args} stands, or at the end</span>
+  test: php artisan test {args}             # arguments go where {args} stands, or at the end
   dev: npm run dev
   deploy: "!git pull &amp;&amp; composer install &amp;&amp; php artisan migrate --force"
 workers:
-  - schedule                   <span class="c"># one, started by up</span>
-  - queue: 3                   <span class="c"># three of that script</span>
+  - schedule                   # one, started by up
+  - queue: 3                   # three of that script
   - dev:
-      startup: false           <span class="c"># started only by: djoser workers start dev</span>
+      startup: false           # started only by: djoser workers start dev
   - mail:
       count: 2
       startup: false</code></pre>
@@ -291,7 +808,7 @@ workers:
 
 <section id="example-laravel" data-search="example large laravel aliases tenants postgres reverb xdebug">
   <h2>Example: a large Laravel app</h2>
-  <pre><code>name: shop
+  <pre data-lang="djoser.yaml"><code class="language-yaml">name: shop
 domain: shop.localhost
 aliases: [www, admin, api, "*"]
 web-root: public
@@ -346,11 +863,11 @@ workers:
 <section id="example-next" data-search="example next.js nextjs node static export">
   <h2>Example: Next.js</h2>
   <p>Djoser serves files from a folder and does not yet stand in front of the Next.js server. Two ways work today: a static export served at <code>https://web.localhost</code>, and the dev server kept running as a worker on port 3000.</p>
-  <pre><code>djoser npx create-next-app@latest web
+  <pre data-lang="terminal"><code class="language-cli">djoser npx create-next-app@latest web
 cd web
-djoser npm run build               <span class="c"># with output: 'export' in next.config.js, this writes out</span>
+djoser npm run build               # with output: 'export' in next.config.js, this writes out
 djoser init --root out -y</code></pre>
-  <pre><code>name: web
+  <pre data-lang="djoser.yaml"><code class="language-yaml">name: web
 domain: web.localhost
 web-root: out
 services:
@@ -365,22 +882,23 @@ scripts:
   prisma: npx prisma {args}
 workers:
   - dev</code></pre>
-  <pre><code>djoser up
+  <pre data-lang="terminal"><code class="language-cli">djoser up
 djoser run prisma migrate dev
 djoser logs dev -f</code></pre>
 </section>
 
 <section id="example-plain" data-search="example plain html php page static">
   <h2>Example: a plain page</h2>
-  <pre><code>cd D:\Sites\landing
+  <pre data-lang="terminal"><code class="language-cli">cd D:\Sites\landing
 djoser init -y
 djoser up</code></pre>
-  <pre><code>name: landing
+  <pre data-lang="djoser.yaml"><code class="language-yaml">name: landing
 domain: landing.localhost
 web-root: .
 services:
-  php: 8.5                     <span class="c"># leave services out for HTML only</span></code></pre>
+  php: 8.5                     # leave services out for HTML only</code></pre>
 </section>
+
 <section id="commands" data-search="commands projects init up down status ps projects remove exec which config env sync global project no-color">
   <h2>Every command</h2>
   <p>Inside a project folder, commands act on that project. <code>--project &lt;name&gt;</code> picks another one from anywhere, <code>--no-color</code> prints plain text, and <code>djoser &lt;command&gt; --help</code> lists its options.</p>
@@ -431,6 +949,7 @@ services:
     <tr><td><code>djoser jobs retry &lt;id&gt;</code> / <code>jobs retry all</code></td><td>Run them again</td></tr>
   </table>
 </section>
+
 <section id="commands-data" data-search="commands databases db backup restore list tool db heidisql">
   <h3>Databases</h3>
   <table>
@@ -444,6 +963,7 @@ services:
     <tr><td><code>djoser tool db</code></td><td>Open HeidiSQL on the project's database</td></tr>
   </table>
 </section>
+
 <section id="commands-sites" data-search="commands sites trust share ports move">
   <h3>Sites</h3>
   <table>
@@ -455,6 +975,7 @@ services:
     <tr><td><code>djoser ports move mysql 3307</code></td><td>That port</td></tr>
   </table>
 </section>
+
 <section id="commands-versions" data-search="commands versions list install add use update uninstall runtimes php-ext unverified env">
   <h3>Versions</h3>
   <table>
@@ -475,6 +996,7 @@ services:
     <tr><td><code>djoser uninstall php 8.5.12</code> / <code>-y</code></td><td>Remove a version; for a database server, offer a backup first</td></tr>
   </table>
 </section>
+
 <section id="commands-djoser" data-search="commands doctor self-update engine services operations version">
   <h3>Djoser itself</h3>
   <table>
@@ -487,84 +1009,235 @@ services:
     <tr><td><code>djoser -v</code></td><td>The version</td></tr>
   </table>
 </section>
+
 <section id="sites" data-search="sites https trust aliases subdomain hosts share ports">
   <h2>Sites and HTTPS</h2>
   <p>Every project is served by Caddy at <code>https://&lt;domain&gt;</code> with a certificate from Djoser's local authority; <code>djoser trust</code> makes browsers accept it. <code>aliases: [www, api, "*"]</code> serves subdomains of the same project, so Laravel subdomain routes work.</p>
-  <p>Names under <code>.localhost</code> need no setup, and this page opens at <code>https://djoser.localhost</code> as well as <code>127.0.0.1</code> and <code>localhost</code>. When port 443 is taken, sites move to another port and <code>up</code> prints the address.</p>
+  <p>Names under <code>.localhost</code> need no setup, and while Djoser runs on your PC this guide also opens offline at <code>https://djoser.localhost</code> as well as <code>127.0.0.1</code> and <code>localhost</code>. When port 443 is taken, sites move to another port and <code>up</code> prints the address.</p>
   <h3 id="hosts">Another domain: the hosts file</h3>
   <p>Keep <code>.localhost</code> when you can. If a browser or tool will not open it, or you want <code>shop.test</code>, set <code>domain: shop.test</code> and add the name to Windows' <code>hosts</code> file; <code>up</code> prints the lines. Djoser never writes this file itself, since it needs administrator rights.</p>
   <p>In PowerShell started with <b>Run as administrator</b>:</p>
-  <pre><code>Add-Content "$env:windir\System32\drivers\etc\hosts" "`n127.0.0.1 shop.test www.shop.test`n::1 shop.test www.shop.test"
+  <pre data-lang="powershell"><code class="language-cli">Add-Content "$env:windir\System32\drivers\etc\hosts" "`n127.0.0.1 shop.test www.shop.test`n::1 shop.test www.shop.test"
 ipconfig /flushdns</code></pre>
   <p>Or with Notepad: start it with <b>Run as administrator</b>, open <code>C:\Windows\System32\drivers\etc\hosts</code> (choose <i>All files</i>), add the lines at the end, and save:</p>
-  <pre><code>127.0.0.1 shop.test www.shop.test
+  <pre data-lang="hosts"><code class="language-cli">127.0.0.1 shop.test www.shop.test
 ::1       shop.test www.shop.test</code></pre>
   <p>The hosts file has no wildcards, so <code>aliases: ["*"]</code> works only under <code>.localhost</code>; list each subdomain instead. To undo, delete the lines and save.</p>
 </section>
+
 <section id="backups" data-search="databases backups backup restore">
   <h2>Databases and backups</h2>
   <p>Each project gets its own database on a shared server; <code>database:</code> picks another name. <code>djoser db backup</code> writes one file per database to <code>Documents\Djoser\Backups\&lt;project&gt;</code>, or the folder <code>backups:</code> names. Backups stay after Djoser is uninstalled, and Djoser never deletes them. <code>djoser db restore</code> backs up what is there first and waits for a typed <code>y</code>.</p>
 </section>
+
 <section id="workers" data-search="workers scripts startup stop start memory jobs">
   <h2>Scripts and workers</h2>
   <p><code>workers:</code> are the scripts <code>up</code> keeps running; they restart when they stop, and <code>down</code> ends them with what they started, such as Vite. Nothing runs until you list it. A stop with <code>djoser workers stop</code> lasts until the next <code>up</code>; <code>--save</code> writes <code>startup:</code> so the file decides from then on.</p>
 </section>
+
 <section id="deploy" data-search="deploy server ubuntu droplet digitalocean nginx certbot production deploy.sh">
-  <h2>Deploy to a server <span class="badge">experimental</span></h2>
+  <h2>Deploy to a server <span class="text-xs font-semibold text-brand bg-brand-soft rounded-full px-2.5 py-0.5 align-middle ml-1">experimental</span></h2>
   <div class="note"><b>Experimental. You run this script at your own risk.</b> It is meant for someone who knows Linux and has read the script and changed it where needed before running it.</div>
   <p><code>djoser deploy</code> writes one <code>deploy.sh</code> from <code>djoser.yaml</code>. Run as root on a fresh Ubuntu 24.04 or 26.04 server, such as a DigitalOcean Droplet, it prepares the server for this one project: a user, swap, the firewall, PHP from packages.sury.org with the project's extensions and settings, Node.js, the database servers on <code>127.0.0.1</code> with the project's database, Nginx with Let's Encrypt, and systemd units for the workers. Everything comes from apt, and each repository is trusted only after its key's fingerprint matches. It does not upload code, write <code>.env</code>, run migrations or start the workers; it prints those steps.</p>
-  <pre><code>djoser deploy                          <span class="c"># deploy.sh beside djoser.yaml; -y replaces one</span>
+  <pre data-lang="terminal"><code class="language-cli">djoser deploy                          # deploy.sh beside djoser.yaml; -y replaces one
 ssh root@&lt;server-ip&gt; "mkdir -p /var/www"
-scp -r D:\Sites\shop root@&lt;server-ip&gt;:/var/www/shop      <span class="c"># the first time; later copy only what changed</span>
+scp -r D:\Sites\shop root@&lt;server-ip&gt;:/var/www/shop      # the first time; later copy only what changed
 ssh root@&lt;server-ip&gt; "bash /var/www/shop/deploy.sh --domain shop.com --email you@shop.com"</code></pre>
   <p>Its variables are also flags: <code>--path</code>, <code>--user</code>, <code>--domain</code>, <code>--db-password</code>, <code>--email</code>, <code>--swap</code>, <code>--composer</code>, <code>--build</code>. Mail and S3 are yours to set. In git, keep it with LF endings: <code>*.sh text eol=lf</code> in <code>.gitattributes</code>.</p>
 </section>
+
+<section id="what-runs" data-search="what runs today supported versions php extensions mysql mariadb postgres mongodb redis rustfs mailpit caddy heidisql cloudflared">
+  <h2>What runs today</h2>
+  <table>
+    <tr><th>Service / Tool</th><th>Supported in Djoser 0.3.1</th></tr>
+    <tr><td><b>PHP</b></td><td>Official Windows builds (including 8.6), one FastCGI pool per version and extension/INI set, <code>djoser update php</code> for new patches</td></tr>
+    <tr><td><b>PHP extensions</b></td><td><code>redis</code>, <code>imagick</code>, <code>memcached</code>, <code>xdebug</code>, <code>sqlsrv</code>, <code>pdo_sqlsrv</code>, <code>apcu</code>, <code>mongodb</code>, <code>amqp</code>, plus all bundled PHP extensions</td></tr>
+    <tr><td><b>Composer &amp; Node.js</b></td><td>Per-project versions in any folder; Node.js also reads <code>.nvmrc</code> and <code>.node-version</code></td></tr>
+    <tr><td><b>MySQL</b></td><td>8.0, 8.4, 9.7</td></tr>
+    <tr><td><b>MariaDB</b></td><td>10.11, 11.4, 11.8, 12.3, 13.0</td></tr>
+    <tr><td><b>PostgreSQL</b></td><td>15, 16, 17, 18</td></tr>
+    <tr><td><b>MongoDB</b></td><td>7.0, 8.0, 8.2, 8.3 (with <code>mongosh</code> and <code>mongodb-tools</code>)</td></tr>
+    <tr><td><b>Redis</b></td><td>7.2, 7.4, 8.4, 8.10</td></tr>
+    <tr><td><b>RustFS (S3)</b></td><td>1.0, with a web console and an automatic S3 bucket per project</td></tr>
+    <tr><td><b>Mailpit</b></td><td>1.33, local SMTP catcher and web inbox</td></tr>
+    <tr><td><b>Backups</b></td><td>MySQL, MariaDB, PostgreSQL and MongoDB logical dumps outside Djoser's folder</td></tr>
+    <tr><td><b>Workers</b></td><td>Queues, scheduler, Vite or any script, supervised with memory and failed-job monitoring</td></tr>
+    <tr><td><b>Sites &amp; Helpers</b></td><td>Caddy with local HTTPS on <code>*.localhost</code>, subdomain aliases, HeidiSQL (<code>djoser tool db</code>), and Cloudflare Quick Tunnels (<code>djoser share</code>)</td></tr>
+    <tr><td><b>Servers</b></td><td><code>djoser deploy</code> generates an Ubuntu 24.04 / 26.04 setup script (experimental)</td></tr>
+  </table>
+</section>
+
 <section id="trouble" data-search="trouble problem error certificate port failed doctor">
   <h2>When something is wrong</h2>
   <table>
     <tr><th>Sign</th><th>What to do</th></tr>
+    <tr><td><code>djoser</code> is not found</td><td>Open a new terminal after installing, or reinstall with "Add Djoser to PATH"</td></tr>
     <tr><td>Browsers warn about the certificate</td><td><code>djoser trust</code>, then restart the browser</td></tr>
     <tr><td>The address has a port such as <code>:8443</code></td><td>Another program has port 443; <code>djoser ports</code> shows which</td></tr>
     <tr><td>A service shows <code>failed</code></td><td><code>djoser services</code> shows its last error</td></tr>
     <tr><td>A worker keeps restarting</td><td><code>djoser logs &lt;worker&gt;</code></td></tr>
     <tr><td>A <code>.localhost</code> name will not open in a browser or tool</td><td>Use another domain through the <a href="#hosts">hosts file</a></td></tr>
     <tr><td>Laravel cannot reach the database</td><td><code>djoser env sync</code></td></tr>
+    <tr><td>A port is taken</td><td><code>djoser ports</code>, then <code>djoser ports move &lt;service&gt;</code></td></tr>
     <tr><td>Anything else</td><td><code>djoser doctor</code></td></tr>
   </table>
-  <footer>Djoser 0.3.1 &middot; This page is served by Djoser on this machine only.</footer>
+  <footer class="mt-16 pt-6 border-t border-line text-sm text-muted flex flex-wrap justify-between gap-3">
+    <div>Djoser 0.3.1 &middot; Built by <a href="https://www.egyptustech.com" target="_blank" rel="noopener noreferrer">EgyptusTech</a> &middot; Also available offline at <code>https://djoser.localhost</code> while Djoser runs.</div>
+    <div class="flex flex-wrap gap-4">
+      <a href="https://github.com/Egyptus/Djoser/releases/latest" target="_blank" rel="noopener noreferrer">Download</a>
+      <a href="https://github.com/Egyptus/Djoser" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://github.com/Egyptus/Djoser/releases" target="_blank" rel="noopener noreferrer">Releases</a>
+    </div>
+  </footer>
 </section>
-<p id="nothing" class="hidden">Nothing matches.</p>
+<p id="nothing" class="hidden" role="status" aria-live="polite">Nothing matches.</p>
 </main>
 </div>
+
 <script>
 (function () {
   var root = document.documentElement;
-  try { var saved = localStorage.getItem("djoser-theme"); if (saved) root.setAttribute("data-theme", saved); } catch (e) {}
   document.getElementById("theme").addEventListener("click", function () {
     var dark = root.getAttribute("data-theme") === "dark" || (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
     var next = dark ? "light" : "dark";
     root.setAttribute("data-theme", next);
     try { localStorage.setItem("djoser-theme", next); } catch (e) {}
   });
-  document.querySelectorAll("pre").forEach(function (block) {
-    var button = document.createElement("button");
-    button.className = "copy"; button.type = "button"; button.textContent = "Copy";
-    button.addEventListener("click", function () {
-      var text = block.querySelector("code").innerText.split("\n").map(function (line) { return line.replace(/\s+#.*$/, ""); }).join("\n").trim();
-      navigator.clipboard.writeText(text).then(function () { button.textContent = "Copied"; setTimeout(function () { button.textContent = "Copy"; }, 1500); });
+
+  var menu = document.getElementById("menu");
+  var menuToggle = document.getElementById("menu-toggle");
+  if (menuToggle && menu) {
+    menuToggle.addEventListener("click", function () {
+      var open = menu.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
     });
-    block.appendChild(button);
+    menu.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        menu.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  // Deterministic highlighter for Djoser CLI & .env blocks so hyphenated words like create-project are never broken
+  function highlightCliLine(line) {
+    var commentIdx = line.search(/\s+#\s/);
+    var codePart = commentIdx >= 0 ? line.slice(0, commentIdx) : line;
+    var commentPart = commentIdx >= 0 ? line.slice(commentIdx) : "";
+
+    var html = escapeHtml(codePart);
+    // Strings in double quotes
+    html = html.replace(/("[^"]*")/g, '<span class="tok-str">$1</span>');
+    // Leading commands
+    html = html.replace(/^(\s*)(djoser|cd|ssh|scp|Add-Content|ipconfig)(?=\s|$)/, '$1<span class="tok-cmd">$2</span>');
+    // Djoser subcommands right after djoser
+    html = html.replace(/(<span class="tok-cmd">djoser<\/span>\s+)(init|up|down|status|ps|projects|remove|exec|which|config|env|deploy|php|artisan|composer|node|npm|npx|mysql|mariadb|psql|mongosh|redis-cli|mysqldump|mariadb-dump|pg_dump|run|workers|logs|jobs|db|tool|trust|share|ports|list|install|add|use|update|runtimes|uninstall|doctor|self-update|engine|services|operations)(?=\s|$)/, '$1<span class="tok-sub">$2</span>');
+    // Standalone CLI flags (--flag or -f) preceded by space
+    html = html.replace(/(\s)(--?[a-zA-Z0-9-]+)(?=\s|$|=)/g, '$1<span class="tok-flag">$2</span>');
+    // Standalone version numbers
+    html = html.replace(/(\s)(\d+(?:\.\d+)*)(?=\s|$)/g, '$1<span class="tok-num">$2</span>');
+
+    if (commentPart) {
+      html += '<span class="tok-comment">' + escapeHtml(commentPart) + '</span>';
+    }
+    return html;
+  }
+
+  function highlightEnvLine(line) {
+    var eq = line.indexOf("=");
+    if (eq < 0) return escapeHtml(line);
+    var key = escapeHtml(line.slice(0, eq));
+    var val = escapeHtml(line.slice(eq + 1));
+    return '<span class="tok-key">' + key + '</span>=<span class="tok-str">' + val + '</span>';
+  }
+
+  // Save clean copyable lines (stripping inline comments) & add language badge + Copy button
+  document.querySelectorAll("pre").forEach(function (block) {
+    var codeEl = block.querySelector("code");
+    var rawFull = codeEl ? codeEl.textContent : block.textContent;
+    var rawCopy = rawFull
+      .split("\n")
+      .map(function (line) { return line.replace(/\s+#.*$/, ""); })
+      .join("\n")
+      .trim();
+    block.setAttribute("data-copy", rawCopy);
+
+    if (codeEl && codeEl.classList.contains("language-cli")) {
+      codeEl.innerHTML = rawFull.split("\n").map(highlightCliLine).join("\n");
+    } else if (codeEl && codeEl.classList.contains("language-env")) {
+      codeEl.innerHTML = rawFull.split("\n").map(highlightEnvLine).join("\n");
+    }
+
+    var toolbar = document.createElement("div");
+    toolbar.className = "code-toolbar";
+
+    var lang = block.getAttribute("data-lang");
+    if (lang) {
+      var tag = document.createElement("span");
+      tag.className = "lang-tag" + (lang === "djoser.yaml" ? " is-yaml" : "");
+      tag.textContent = lang;
+      toolbar.appendChild(tag);
+    }
+
+    var button = document.createElement("button");
+    button.className = "copy";
+    button.type = "button";
+    button.textContent = "Copy";
+    button.setAttribute("aria-label", "Copy code to clipboard");
+    button.addEventListener("click", function () {
+      navigator.clipboard.writeText(block.getAttribute("data-copy") || "").then(function () {
+        button.textContent = "Copied";
+        setTimeout(function () { button.textContent = "Copy"; }, 1500);
+      });
+    });
+    toolbar.appendChild(button);
+    block.appendChild(toolbar);
   });
+
+  // Apply Highlight.js specifically to YAML code blocks
+  function highlightYaml() {
+    if (window.hljs) {
+      document.querySelectorAll("pre code.language-yaml").forEach(function (el) {
+        window.hljs.highlightElement(el);
+      });
+    }
+  }
+  if (document.readyState === "complete") {
+    highlightYaml();
+  } else {
+    window.addEventListener("load", highlightYaml);
+  }
+
   var sections = Array.prototype.slice.call(document.querySelectorAll("main section"));
   var links = Array.prototype.slice.call(document.querySelectorAll("nav a"));
-  document.getElementById("search").addEventListener("input", function (event) {
-    var query = event.target.value.trim().toLowerCase(), shown = 0;
+  var searchInput = document.getElementById("search");
+  function filterSections(query) {
+    var shown = 0;
     sections.forEach(function (section) {
       var match = !query || section.textContent.toLowerCase().indexOf(query) >= 0 || (section.getAttribute("data-search") || "").indexOf(query) >= 0;
-      section.classList.toggle("hidden", !match); if (match) shown++;
+      section.classList.toggle("hidden", !match);
+      if (match) shown++;
     });
     document.getElementById("nothing").classList.toggle("hidden", shown > 0);
+  }
+  searchInput.addEventListener("input", function (event) {
+    filterSections(event.target.value.trim().toLowerCase());
   });
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "/" && document.activeElement !== searchInput && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      event.preventDefault();
+      searchInput.focus();
+    } else if (event.key === "Escape" && document.activeElement === searchInput) {
+      searchInput.value = "";
+      filterSections("");
+      searchInput.blur();
+    }
+  });
+
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (!entry.isIntersecting) return;
