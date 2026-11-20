@@ -111,35 +111,9 @@
 })();
 </script>
 
-<!-- Tailwind CSS CDN (with preflight disabled so our typography/spacing scale is never reset!) -->
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-tailwind.config = {
-  corePlugins: {
-    preflight: false,
-  },
-  darkMode: ['selector', '[data-theme="dark"]'],
-  theme: {
-    extend: {
-      colors: {
-        bg: 'var(--bg)',
-        side: 'var(--side)',
-        text: 'var(--text)',
-        muted: 'var(--muted)',
-        line: 'var(--line)',
-        brand: 'var(--brand)',
-        'brand-hover': 'var(--brand-hover)',
-        'brand-soft': 'var(--brand-soft)',
-        card: 'var(--card)',
-      }
-    }
-  }
-};
-</script>
-
 <!-- Highlight.js CDN for YAML syntax coloring -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" integrity="sha384-RH2xi4eIQ/gjtbs9fUXM68sLSi99C7ZWBRX1vDrVv6GQXRibxXLbwO2NGZB74MbU" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js" integrity="sha384-A/iMReLA0Bo3tLydBIoOQXQzYnrwL90jkHYUubrtERUGCbIuU7U0EHge0Xd2s5sr" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
 
 <style>
 :root {
@@ -498,59 +472,350 @@ td:first-child { white-space: nowrap; }
   :root:not([data-theme="light"]) .icon-moon { display: none; }
 }
 
+/* Header */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 64px;
+  padding: 0 28px;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  -webkit-backdrop-filter: saturate(160%) blur(12px);
+  backdrop-filter: saturate(160%) blur(12px);
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 19px; color: var(--text); }
+.brand:hover { text-decoration: none; }
+.brand svg { width: 30px; height: 30px; flex: none; }
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--brand);
+  background: var(--brand-soft);
+  border-radius: 999px;
+  padding: 1px 10px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.search { margin-left: auto; }
+.search input {
+  width: 288px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--side);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 6px 14px;
+}
+.search input:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
+.header-actions { display: flex; align-items: center; gap: 8px; }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s, transform .15s;
+}
+.btn:hover { border-color: var(--brand); text-decoration: none; }
+.btn svg { width: 16px; height: 16px; flex: none; }
+.btn-primary { color: #0c0a09; background: var(--brand); border-color: var(--brand); }
+.btn-primary:hover { background: var(--brand-hover); border-color: var(--brand-hover); }
+.btn-lg { font-size: 15px; border-radius: 12px; padding: 10px 20px; }
+.btn-lg svg { width: 18px; height: 18px; }
+.btn-lg:hover { transform: translateY(-1px); }
+.btn-icon { justify-content: center; width: 36px; height: 36px; padding: 0; color: var(--muted); background: transparent; }
+.btn-icon:hover { color: var(--brand); }
+.btn-icon svg { width: 18px; height: 18px; }
+.menu-toggle { display: none; background: transparent; }
+
+/* Hero */
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 36px;
+  align-items: center;
+  padding: 40px 40px 36px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  overflow: hidden;
+  background:
+    radial-gradient(900px 340px at 0% 0%, var(--brand-soft), transparent 70%),
+    radial-gradient(600px 300px at 100% 100%, color-mix(in srgb, var(--brand) 10%, transparent), transparent 70%);
+}
+/* A faint pyramid line in the background, Djoser's own shape. */
+.hero::after {
+  content: "";
+  position: absolute;
+  right: -60px;
+  bottom: -40px;
+  width: 340px;
+  height: 300px;
+  background: linear-gradient(135deg, transparent 49.6%, color-mix(in srgb, var(--brand) 22%, transparent) 50%, transparent 50.6%),
+              linear-gradient(225deg, transparent 49.6%, color-mix(in srgb, var(--brand) 22%, transparent) 50%, transparent 50.6%);
+  background-size: 50% 100%;
+  background-position: 0 0, 100% 0;
+  background-repeat: no-repeat;
+  opacity: .5;
+  pointer-events: none;
+}
+.hero-logo { width: 64px; height: 64px; }
+.hero h1 { margin: 16px 0 0; font-size: 38px; line-height: 1.15; letter-spacing: -0.02em; }
+.hero h1 span { color: var(--brand); }
+.hero-text { margin: 14px 0 0; font-size: 17px; line-height: 1.7; color: var(--muted); }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 26px; }
+.hero-meta { margin-top: 14px; font-size: 13.5px; color: var(--muted); }
+
+/* The terminal in the hero: plays once, then stays. */
+.terminal {
+  position: relative;
+  z-index: 1;
+  background: var(--code);
+  border: 1px solid var(--code-border);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, .45);
+  font: 13.5px/1.75 "Cascadia Code", "Cascadia Mono", Consolas, monospace;
+  color: var(--code-text);
+  overflow: hidden;
+}
+.terminal-bar { display: flex; align-items: center; gap: 7px; padding: 10px 14px; border-bottom: 1px solid var(--code-border); }
+.terminal-bar i { width: 11px; height: 11px; border-radius: 50%; background: #44403c; }
+.terminal-bar i:first-child { background: #ef4444; }
+.terminal-bar i:nth-child(2) { background: #f59e0b; }
+.terminal-bar i:nth-child(3) { background: #22c55e; }
+.terminal-bar span { margin-left: 8px; font: 12px "Segoe UI", system-ui, sans-serif; color: #a8a29e; }
+.terminal-body { padding: 16px 18px 18px; white-space: pre; overflow-x: auto; }
+.terminal-body .line { opacity: 0; animation: line-in .35s ease forwards; }
+.terminal-body .p { color: #ffb655; }
+.terminal-body .ok { color: #86efac; }
+.terminal-body .dim { color: #8a837e; }
+.terminal-body .url { color: #67e8f9; }
+.terminal-body .cursor { display: inline-block; width: 8px; height: 1.1em; vertical-align: -0.2em; background: #ffb655; animation: blink 1s steps(1) infinite; }
+@keyframes line-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .terminal-body .line { opacity: 1; animation: none; }
+  .terminal-body .cursor { animation: none; }
+  .btn-lg:hover { transform: none; }
+}
+
+/* New in this release */
+.whats-new {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  margin: 18px 0 0;
+  padding: 12px 18px;
+  border: 1px dashed color-mix(in srgb, var(--brand) 45%, var(--line));
+  border-radius: 14px;
+  font-size: 14.5px;
+}
+.whats-new b { color: var(--brand); }
+.whats-new a { color: var(--text); }
+.whats-new a:hover { color: var(--brand); }
+
+/* Cards */
+.cards { display: grid; gap: 16px; margin: 22px 0; }
+.cards-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.cards-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.card {
+  display: block;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--text);
+  transition: border-color .15s, transform .15s, box-shadow .15s;
+}
+a.card:hover { border-color: var(--brand); text-decoration: none; transform: translateY(-2px); box-shadow: 0 12px 28px -18px rgba(0, 0, 0, .35); }
+.card b { display: block; margin-bottom: 6px; font-size: 16px; }
+.card span { display: block; font-size: 14px; line-height: 1.65; color: var(--muted); }
+.card .card-icon { width: 34px; height: 34px; margin-bottom: 12px; padding: 7px; border-radius: 10px; color: var(--brand); background: var(--brand-soft); }
+
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--muted);
+}
+.footer-links { display: flex; flex-wrap: wrap; gap: 16px; }
+
+@media (max-width: 1200px) {
+  .cards-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cards-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero { grid-template-columns: 1fr; }
+  .search input { width: 220px; }
+}
+@media (max-width: 1100px) {
+  .hide-small { display: none; }
+  .search input { width: 180px; }
+}
+@media (max-width: 760px) {
+  .site-header { gap: 8px; padding: 0 16px; }
+  .site-header .badge { display: none; }
+  .search { min-width: 0; flex: 1 1 auto; }
+  .search input { width: 100%; }
+  .header-actions .btn-primary span { display: none; }
+  .header-actions .btn-primary { padding: 0; width: 36px; height: 36px; justify-content: center; }
+}
+@media (max-width: 640px) {
+  .cards-4, .cards-3 { grid-template-columns: 1fr; }
+  .hero { padding: 26px 20px; }
+  .hero h1 { font-size: 28px; }
+  .terminal { font-size: 12px; }
+}
+
+/* The menu icon turns into an X while the drawer is open. */
+.menu-toggle .bar { transition: transform .2s ease, opacity .2s ease; transform-origin: 12px 12px; }
+.menu-toggle[aria-expanded="true"] .bar-1 { transform: translateY(5px) rotate(45deg); }
+.menu-toggle[aria-expanded="true"] .bar-2 { opacity: 0; }
+.menu-toggle[aria-expanded="true"] .bar-3 { transform: translateY(-5px) rotate(-45deg); }
+.nav-head { display: none; }
+.nav-head + h4 { margin-top: 0; }
+nav .nav-head .brand { display: flex; margin: 0; padding: 0; background: none; color: var(--text); }
+.nav-backdrop { display: none; }
+
 @media (max-width: 900px) {
+  .menu-toggle { display: inline-flex; color: var(--text); }
   .layout { grid-template-columns: 1fr; }
+
+  /* The sidebar becomes a drawer that slides in from the left over a dimmed page. */
   nav {
-    display: none;
     position: fixed;
-    top: 64px;
+    top: 0;
     left: 0;
-    right: 0;
     bottom: 0;
-    height: auto;
-    z-index: 30;
-    border-right: none;
-    border-bottom: 1px solid var(--line);
+    z-index: 40;
+    width: min(300px, 84vw);
+    height: 100vh;
+    height: 100dvh;
+    padding: 0 20px 40px 24px;
+    border-right: 1px solid var(--line);
+    box-shadow: 18px 0 40px -20px rgba(0, 0, 0, .5);
+    transform: translateX(-102%);
+    visibility: hidden;
+    transition: transform .25s ease, visibility 0s linear .25s;
+    overscroll-behavior: contain;
   }
-  nav.open { display: block; }
-  main { padding: 24px 16px 72px; }
-  table { display: block; overflow-x: auto; }
+  nav.open { transform: none; visibility: visible; transition: transform .25s ease; }
+  .nav-head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    margin: 0 -20px 16px -24px;
+    padding: 0 16px 0 24px;
+    border-bottom: 1px solid var(--line);
+    background: var(--side);
+  }
+  .nav-head .brand { font-size: 17px; }
+  .nav-head .brand svg { width: 26px; height: 26px; }
+  nav a { padding: 9px 12px; font-size: 15px; }
+  .nav-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 35;
+    background: rgba(12, 10, 9, .55);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity .25s ease;
+  }
+  .nav-backdrop.open { display: block; opacity: 1; }
+  body.menu-open { overflow: hidden; }
+
+  main { padding: 20px 16px 72px; }
+  section { padding-top: 24px; }
+  h2 { font-size: 23px; margin-top: 16px; }
+  h3 { font-size: 17.5px; margin-top: 28px; }
+  .lead { font-size: 16px; }
+  pre { margin: 14px -4px 20px; padding: 44px 16px 16px; font-size: 12.5px; border-radius: 12px; }
+  pre .code-toolbar { top: 8px; right: 10px; }
+  pre .copy { opacity: 1; }
+  table { display: block; overflow-x: auto; font-size: 14px; -webkit-overflow-scrolling: touch; }
+  th, td { padding: 10px 12px; }
+  .note { padding: 14px 16px; font-size: 15px; }
+  .whats-new { gap: 8px 14px; font-size: 14px; }
+  .site-footer { flex-direction: column; margin-top: 48px; }
+}
+@media (max-width: 420px) {
+  .brand span { display: none; }
+  .hero h1 { font-size: 25px; }
+  .hero-actions .btn-lg { width: 100%; justify-content: center; }
+  .terminal { font-size: 11px; }
+  .terminal-body { padding: 12px 12px 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  nav, nav.open, .nav-backdrop, .menu-toggle .bar { transition: none; }
 }
 </style>
 </head>
-<body class="bg-bg text-text">
+<body>
 <a class="skip-link" href="#content">Skip to main content</a>
 
-<header class="sticky top-0 z-20 flex items-center gap-3 h-16 px-4 lg:px-7 border-b border-line backdrop-blur-md" style="background:color-mix(in srgb,var(--bg) 88%,transparent)">
-  <button class="lg:hidden inline-flex items-center justify-center text-sm text-text bg-transparent border border-line rounded-lg px-3 py-1.5 cursor-pointer hover:border-brand" id="menu-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Toggle navigation menu">Menu</button>
-  <a class="flex items-center gap-2.5 font-bold text-[19px] text-text hover:no-underline" href="#welcome">
-    <svg class="w-[30px] h-[30px] shrink-0" viewBox="0 0 512 512" aria-hidden="true"><path fill="#FFB655" d="M424.5 418.5 213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9L2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h387.3c7.1 0 13.7-3.8 17.3-10 3.5-6.1 3.5-13.8-.1-19.9z"/><path fill="#EE8700" d="M361.7 73.4c-3.6-6.1-10.1-9.9-17.2-9.9s-13.6 3.8-17.2 9.9l-52.2 89.4 101.3 173.4h104c7.1 0 13.7-3.8 17.3-10 3.5-6.2 3.5-13.8-.1-19.9zM213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9l-91.1 156h108.3zM50.7 336.2 2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h193.7V336.2z"/><path fill="#FFE477" d="M213.6 242.7v93.5h162.8l-54.6-93.5z"/></svg>
+<header class="site-header">
+  <button class="btn btn-icon menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open the menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path class="bar bar-1" d="M4 7h16"/><path class="bar bar-2" d="M4 12h16"/><path class="bar bar-3" d="M4 17h16"/></svg>
+  </button>
+  <a class="brand" href="#welcome">
+    <svg viewBox="0 0 512 512" aria-hidden="true"><path fill="#FFB655" d="M424.5 418.5 213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9L2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h387.3c7.1 0 13.7-3.8 17.3-10 3.5-6.1 3.5-13.8-.1-19.9z"/><path fill="#EE8700" d="M361.7 73.4c-3.6-6.1-10.1-9.9-17.2-9.9s-13.6 3.8-17.2 9.9l-52.2 89.4 101.3 173.4h104c7.1 0 13.7-3.8 17.3-10 3.5-6.2 3.5-13.8-.1-19.9zM213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9l-91.1 156h108.3zM50.7 336.2 2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h193.7V336.2z"/><path fill="#FFE477" d="M213.6 242.7v93.5h162.8l-54.6-93.5z"/></svg>
     <span>Djoser</span>
   </a>
-  <span class="text-xs font-semibold text-brand bg-brand-soft rounded-full px-2.5 py-0.5 whitespace-nowrap">v0.3.1</span>
+  <span class="badge">v0.3.1</span>
 
-  <div class="ml-auto relative">
-    <input id="search" type="search" placeholder="Search commands &amp; docs... (/)" aria-label="Search commands and documentation" class="w-40 sm:w-64 md:w-72 text-sm text-text bg-side border border-line rounded-lg px-3.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand">
+  <div class="search">
+    <input id="search" type="search" placeholder="Search commands &amp; docs... (/)" aria-label="Search commands and documentation">
   </div>
 
-  <div class="flex items-center gap-2">
-    <a class="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-text bg-card border border-line rounded-lg px-3.5 py-1.5 hover:border-brand hover:no-underline transition-colors" href="https://github.com/Egyptus/Djoser" target="_blank" rel="noopener noreferrer">
-      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"/></svg>
+  <div class="header-actions">
+    <a class="btn hide-small" href="https://github.com/Egyptus/Djoser" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"/></svg>
       <span>GitHub</span>
     </a>
-    <a class="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0c0a09] bg-brand border border-brand rounded-lg px-3.5 py-1.5 hover:bg-brand-hover hover:no-underline transition-colors" href="https://github.com/Egyptus/Djoser/releases/latest" target="_blank" rel="noopener noreferrer">
-      <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    <a class="btn btn-primary" href="https://github.com/Egyptus/Djoser/releases/latest" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       <span>Download</span>
     </a>
   </div>
-  <button class="inline-flex items-center justify-center w-9 h-9 text-muted bg-transparent border border-line rounded-lg cursor-pointer hover:border-brand hover:text-brand transition-colors" id="theme" type="button" aria-label="Switch light and dark theme" title="Switch light and dark theme">
-    <svg class="icon-sun w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-    <svg class="icon-moon w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+  <button class="btn btn-icon" id="theme" type="button" aria-label="Switch light and dark theme" title="Switch light and dark theme">
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
   </button>
 </header>
 
 <div class="layout">
+<div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
 <nav id="menu" aria-label="Documentation sections">
+  <div class="nav-head">
+    <a class="brand" href="#welcome"><svg viewBox="0 0 512 512" aria-hidden="true"><path fill="#FFB655" d="M424.5 418.5 213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9L2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h387.3c7.1 0 13.7-3.8 17.3-10 3.5-6.1 3.5-13.8-.1-19.9z"/><path fill="#EE8700" d="M361.7 73.4c-3.6-6.1-10.1-9.9-17.2-9.9s-13.6 3.8-17.2 9.9l-52.2 89.4 101.3 173.4h104c7.1 0 13.7-3.8 17.3-10 3.5-6.2 3.5-13.8-.1-19.9zM213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9l-91.1 156h108.3zM50.7 336.2 2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h193.7V336.2z"/><path fill="#FFE477" d="M213.6 242.7v93.5h162.8l-54.6-93.5z"/></svg><span>Djoser</span></a>
+    <button class="btn btn-icon" id="menu-close" type="button" aria-label="Close the menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6 6 18"/></svg></button>
+  </div>
   <h4>Getting started</h4>
   <a href="#welcome">Overview</a>
   <a href="#install">Why Djoser &amp; Install</a>
@@ -582,41 +847,52 @@ td:first-child { white-space: nowrap; }
 
 <main id="content">
 <section id="welcome" data-search="welcome djoser overview download windows php laravel node">
-  <div class="flex flex-col md:flex-row gap-7 items-start p-7 md:p-9 border border-line rounded-2xl" style="background:linear-gradient(135deg,var(--brand-soft),transparent 70%)">
-    <svg class="w-16 h-16 md:w-[88px] md:h-[88px] shrink-0 mt-1" viewBox="0 0 512 512" aria-hidden="true"><path fill="#FFB655" d="M424.5 418.5 213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9L2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h387.3c7.1 0 13.7-3.8 17.3-10 3.5-6.1 3.5-13.8-.1-19.9z"/><path fill="#EE8700" d="M361.7 73.4c-3.6-6.1-10.1-9.9-17.2-9.9s-13.6 3.8-17.2 9.9l-52.2 89.4 101.3 173.4h104c7.1 0 13.7-3.8 17.3-10 3.5-6.2 3.5-13.8-.1-19.9zM213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9l-91.1 156h108.3zM50.7 336.2 2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h193.7V336.2z"/><path fill="#FFE477" d="M213.6 242.7v93.5h162.8l-54.6-93.5z"/></svg>
+  <div class="hero">
     <div>
-      <h1 class="m-0 text-2xl md:text-[34px] font-bold leading-tight">Djoser — A Native Windows Home for PHP &amp; Laravel</h1>
-      <p class="mt-3 mb-0 text-muted text-[17px] leading-relaxed">Each project gets its own PHP and Node.js version, local HTTPS site, databases (MySQL, MariaDB, PostgreSQL, MongoDB, Redis), S3 storage, mail inbox and supervised background workers — from one command line, without Docker, WSL or touching the PHP already on your machine.</p>
-      <div class="flex flex-wrap items-center gap-3.5 mt-6">
-        <a class="inline-flex items-center gap-2 text-[15px] font-semibold text-[#0c0a09] bg-brand border border-brand rounded-xl px-5 py-2.5 hover:bg-brand-hover hover:no-underline transition-colors" href="https://github.com/Egyptus/Djoser/releases/latest" target="_blank" rel="noopener noreferrer">
-          <svg class="w-[18px] h-[18px] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span>Download for Windows (x64)</span>
+      <svg class="hero-logo" viewBox="0 0 512 512" aria-hidden="true"><path fill="#FFB655" d="M424.5 418.5 213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9L2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h387.3c7.1 0 13.7-3.8 17.3-10 3.5-6.1 3.5-13.8-.1-19.9z"/><path fill="#EE8700" d="M361.7 73.4c-3.6-6.1-10.1-9.9-17.2-9.9s-13.6 3.8-17.2 9.9l-52.2 89.4 101.3 173.4h104c7.1 0 13.7-3.8 17.3-10 3.5-6.2 3.5-13.8-.1-19.9zM213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9l-91.1 156h108.3zM50.7 336.2 2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h193.7V336.2z"/><path fill="#FFE477" d="M213.6 242.7v93.5h162.8l-54.6-93.5z"/></svg>
+      <h1>A native Windows home for <span>PHP &amp; Laravel</span></h1>
+      <p class="hero-text">Each project gets its own PHP and Node.js version, a local HTTPS site, databases, S3 storage, a mail inbox and background workers — from one <code>djoser.yaml</code> and one command line. No Docker, no WSL, no administrator rights.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="https://github.com/Egyptus/Djoser/releases/latest" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Download for Windows</span>
         </a>
-        <a class="inline-flex items-center gap-2 text-[15px] font-semibold text-text bg-card border border-line rounded-xl px-5 py-2.5 hover:border-brand hover:no-underline transition-colors" href="https://github.com/Egyptus/Djoser" target="_blank" rel="noopener noreferrer">
-          <svg class="w-[18px] h-[18px] shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"/></svg>
-          <span>View on GitHub</span>
+        <a class="btn btn-lg" href="#laravel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          <span>Start a Laravel project</span>
         </a>
-        <span class="text-[13.5px] text-muted">Windows 10 &amp; 11 &middot; Native C++23 &middot; No Administrator Rights</span>
       </div>
+      <div class="hero-meta">Windows 10 &amp; 11 (x64) &middot; free &middot; installs for your user only</div>
+    </div>
+    <div class="terminal" role="img" aria-label="A terminal running djoser up: PHP, MySQL, Redis and two queue workers start, and the site opens at https://shop.localhost">
+      <div class="terminal-bar"><i></i><i></i><i></i><span>D:\Sites\shop</span></div>
+      <div class="terminal-body"><div class="line" style="animation-delay:.1s"><span class="p">&gt;</span> djoser up</div><div class="line dim" style="animation-delay:.7s">  downloading PHP 8.5, MySQL 8.4, Redis 8.4 ...</div><div class="line" style="animation-delay:1.3s">  <span class="ok">✓</span> php-cgi 8.5.12      6 workers</div><div class="line" style="animation-delay:1.7s">  <span class="ok">✓</span> mysql 8.4           127.0.0.1:3306 · shop</div><div class="line" style="animation-delay:2.1s">  <span class="ok">✓</span> redis 8.4           127.0.0.1:6379</div><div class="line" style="animation-delay:2.5s">  <span class="ok">✓</span> workers             queue ×2, schedule</div><div class="line" style="animation-delay:3.1s">  shop is up at <span class="url">https://shop.localhost</span></div><div class="line" style="animation-delay:3.6s"><span class="p">&gt;</span> <span class="cursor"></span></div></div>
     </div>
   </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 my-6">
-    <a class="card block p-5 border border-line rounded-xl bg-card text-text hover:border-brand hover:no-underline transition-colors" href="#install"><b class="block mb-1.5 text-[16px]">Why Djoser &amp; Install</b><span class="text-sm text-muted leading-relaxed block">Per-user setup, zero admin rights, and how Djoser keeps your projects isolated.</span></a>
-    <a class="card block p-5 border border-line rounded-xl bg-card text-text hover:border-brand hover:no-underline transition-colors" href="#laravel"><b class="block mb-1.5 text-[16px]">A Laravel project from zero</b><span class="text-sm text-muted leading-relaxed block">From an empty folder to PHP, MySQL, Redis, S3, mail and workers in 8 steps.</span></a>
-    <a class="card block p-5 border border-line rounded-xl bg-card text-text hover:border-brand hover:no-underline transition-colors" href="#yaml"><b class="block mb-1.5 text-[16px]">djoser.yaml, every key</b><span class="text-sm text-muted leading-relaxed block">One file describes what a project needs, and <code>djoser up</code> makes it true.</span></a>
-    <a class="card block p-5 border border-line rounded-xl bg-card text-text hover:border-brand hover:no-underline transition-colors" href="#commands"><b class="block mb-1.5 text-[16px]">Every command &amp; examples</b><span class="text-sm text-muted leading-relaxed block">Complete CLI reference, large Laravel apps, Next.js, and Ubuntu server deployment.</span></a>
+  <div class="whats-new">
+    <b>New in 0.3.1</b>
+    <a href="#workers">Start and stop workers</a>
+    <a href="#deploy">djoser deploy (experimental)</a>
+    <a href="#hosts">Your own domains</a>
+    <a href="#what-runs">PHP 8.6</a>
+  </div>
+  <div class="cards cards-4">
+    <a class="card" href="#install"><svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 7v6c0 4.4 3.4 7.6 8 8 4.6-.4 8-3.6 8-8V7z"/><path d="m9 12 2 2 4-4"/></svg><b>Why Djoser &amp; Install</b><span>Per-user setup, no administrator rights, and how each project stays on its own versions.</span></a>
+    <a class="card" href="#laravel"><svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5"/><path d="M4 19h16"/><path d="m8 15 4-4 3 3 5-6"/></svg><b>A Laravel project from zero</b><span>From an empty folder to PHP, MySQL, Redis, S3, mail and workers in eight steps.</span></a>
+    <a class="card" href="#yaml"><svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></svg><b>djoser.yaml, every key</b><span>One file says what a project needs, and <code>djoser up</code> makes it true.</span></a>
+    <a class="card" href="#commands"><svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3"/><path d="M13 15h4"/></svg><b>Every command</b><span>The full CLI reference, with examples for large Laravel apps, Next.js and servers.</span></a>
   </div>
 </section>
 
 <section id="install" data-search="why djoser install setup download path self-update windows">
   <h2>Why Djoser &amp; Install</h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-5">
-    <div class="card p-5 border border-line rounded-xl bg-card"><b class="block mb-1.5 text-[16px]">One file per project</b><span class="text-sm text-muted leading-relaxed block"><code>djoser.yaml</code> says what a project needs, and <code>djoser up</code> downloads what is missing and starts it.</span></div>
-    <div class="card p-5 border border-line rounded-xl bg-card"><b class="block mb-1.5 text-[16px]">Versions side by side</b><span class="text-sm text-muted leading-relaxed block">Every project uses its own PHP, extensions, <code>php.ini</code>, Node.js, MySQL, MariaDB, PostgreSQL or MongoDB version.</span></div>
-    <div class="card p-5 border border-line rounded-xl bg-card"><b class="block mb-1.5 text-[16px]">Real local HTTPS</b><span class="text-sm text-muted leading-relaxed block">Each project gets its own <code>https://name.localhost</code> address and subdomain aliases, served by Caddy.</span></div>
-    <div class="card p-5 border border-line rounded-xl bg-card"><b class="block mb-1.5 text-[16px]">Workers that stay up</b><span class="text-sm text-muted leading-relaxed block">Queue workers, the scheduler and <code>npm run dev</code> run under the Supervisor, restart on crash, and stop cleanly as a process tree.</span></div>
-    <div class="card p-5 border border-line rounded-xl bg-card"><b class="block mb-1.5 text-[16px]">No administrator rights</b><span class="text-sm text-muted leading-relaxed block">Djoser installs for your Windows user only, and everything it downloads stays inside one folder.</span></div>
-    <div class="card p-5 border border-line rounded-xl bg-card"><b class="block mb-1.5 text-[16px]">Your data stays safe</b><span class="text-sm text-muted leading-relaxed block"><code>down</code>, <code>remove</code> and <code>uninstall</code> never delete a database, and backups live outside Djoser.</span></div>
+  <div class="cards cards-3">
+    <div class="card"><b>One file per project</b><span><code>djoser.yaml</code> says what a project needs, and <code>djoser up</code> downloads what is missing and starts it.</span></div>
+    <div class="card"><b>Versions side by side</b><span>Every project uses its own PHP, extensions, <code>php.ini</code>, Node.js, MySQL, MariaDB, PostgreSQL or MongoDB version.</span></div>
+    <div class="card"><b>Real local HTTPS</b><span>Each project gets its own <code>https://name.localhost</code> address and subdomain aliases, served by Caddy.</span></div>
+    <div class="card"><b>Workers that stay up</b><span>Queue workers, the scheduler and <code>npm run dev</code> restart when they stop, and stop cleanly with everything they started.</span></div>
+    <div class="card"><b>No administrator rights</b><span>Djoser installs for your Windows user only, and everything it downloads stays inside one folder.</span></div>
+    <div class="card"><b>Your data stays safe</b><span><code>down</code>, <code>remove</code> and <code>uninstall</code> never delete a database, and backups live outside Djoser.</span></div>
   </div>
   <h3>Install on Windows</h3>
   <p>Download <code>Djoser-Setup-x64-0.3.1.exe</code> from the <a href="https://github.com/Egyptus/Djoser/releases/latest" target="_blank" rel="noopener noreferrer">latest GitHub release</a> and run it. It installs for your user without administrator rights and offers two options:</p>
@@ -1036,7 +1312,7 @@ ipconfig /flushdns</code></pre>
 </section>
 
 <section id="deploy" data-search="deploy server ubuntu droplet digitalocean nginx certbot production deploy.sh">
-  <h2>Deploy to a server <span class="text-xs font-semibold text-brand bg-brand-soft rounded-full px-2.5 py-0.5 align-middle ml-1">experimental</span></h2>
+  <h2>Deploy to a server <span class="badge">experimental</span></h2>
   <div class="note"><b>Experimental. You run this script at your own risk.</b> It is meant for someone who knows Linux and has read the script and changed it where needed before running it.</div>
   <p><code>djoser deploy</code> writes one <code>deploy.sh</code> from <code>djoser.yaml</code>. Run as root on a fresh Ubuntu 24.04 or 26.04 server, such as a DigitalOcean Droplet, it prepares the server for this one project: a user, swap, the firewall, PHP from packages.sury.org with the project's extensions and settings, Node.js, the database servers on <code>127.0.0.1</code> with the project's database, Nginx with Let's Encrypt, and systemd units for the workers. Everything comes from apt, and each repository is trusted only after its key's fingerprint matches. It does not upload code, write <code>.env</code>, run migrations or start the workers; it prints those steps.</p>
   <pre data-lang="terminal"><code class="language-cli">djoser deploy                          # deploy.sh beside djoser.yaml; -y replaces one
@@ -1059,7 +1335,7 @@ ssh root@&lt;server-ip&gt; "bash /var/www/shop/deploy.sh --domain shop.com --ema
     <tr><td><b>MongoDB</b></td><td>7.0, 8.0, 8.2, 8.3 (with <code>mongosh</code> and <code>mongodb-tools</code>)</td></tr>
     <tr><td><b>Redis</b></td><td>7.2, 7.4, 8.4, 8.10</td></tr>
     <tr><td><b>RustFS (S3)</b></td><td>1.0, with a web console and an automatic S3 bucket per project</td></tr>
-    <tr><td><b>Mailpit</b></td><td>1.33, local SMTP catcher and web inbox</td></tr>
+    <tr><td><b>Mailpit</b></td><td>1.33, 1.34, local SMTP catcher and web inbox</td></tr>
     <tr><td><b>Backups</b></td><td>MySQL, MariaDB, PostgreSQL and MongoDB logical dumps outside Djoser's folder</td></tr>
     <tr><td><b>Workers</b></td><td>Queues, scheduler, Vite or any script, supervised with memory and failed-job monitoring</td></tr>
     <tr><td><b>Sites &amp; Helpers</b></td><td>Caddy with local HTTPS on <code>*.localhost</code>, subdomain aliases, HeidiSQL (<code>djoser tool db</code>), and Cloudflare Quick Tunnels (<code>djoser share</code>)</td></tr>
@@ -1081,16 +1357,16 @@ ssh root@&lt;server-ip&gt; "bash /var/www/shop/deploy.sh --domain shop.com --ema
     <tr><td>A port is taken</td><td><code>djoser ports</code>, then <code>djoser ports move &lt;service&gt;</code></td></tr>
     <tr><td>Anything else</td><td><code>djoser doctor</code></td></tr>
   </table>
-  <footer class="mt-16 pt-6 border-t border-line text-sm text-muted flex flex-wrap justify-between gap-3">
-    <div>Djoser 0.3.1 &middot; Built by <a href="https://www.egyptustech.com" target="_blank" rel="noopener noreferrer">EgyptusTech</a> &middot; Also available offline at <code>https://djoser.localhost</code> while Djoser runs.</div>
-    <div class="flex flex-wrap gap-4">
-      <a href="https://github.com/Egyptus/Djoser/releases/latest" target="_blank" rel="noopener noreferrer">Download</a>
-      <a href="https://github.com/Egyptus/Djoser" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href="https://github.com/Egyptus/Djoser/releases" target="_blank" rel="noopener noreferrer">Releases</a>
-    </div>
-  </footer>
 </section>
 <p id="nothing" class="hidden" role="status" aria-live="polite">Nothing matches.</p>
+<footer class="site-footer">
+  <div>Djoser 0.3.1 &middot; Built by <a href="https://www.egyptustech.com" target="_blank" rel="noopener noreferrer">EgyptusTech</a> &middot; Also offline at <code>https://djoser.localhost</code> while Djoser runs.</div>
+  <div class="footer-links">
+    <a href="https://github.com/Egyptus/Djoser/releases/latest" target="_blank" rel="noopener noreferrer">Download</a>
+    <a href="https://github.com/Egyptus/Djoser" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="https://github.com/Egyptus/Djoser/releases" target="_blank" rel="noopener noreferrer">Releases</a>
+  </div>
+</footer>
 </main>
 </div>
 
@@ -1104,20 +1380,39 @@ ssh root@&lt;server-ip&gt; "bash /var/www/shop/deploy.sh --domain shop.com --ema
     try { localStorage.setItem("djoser-theme", next); } catch (e) {}
   });
 
+  // The sidebar is a drawer on small screens: the icon opens it; the X, the dimmed page, a link
+  // or Escape close it, and the page behind does not scroll while it is open.
   var menu = document.getElementById("menu");
   var menuToggle = document.getElementById("menu-toggle");
-  if (menuToggle && menu) {
-    menuToggle.addEventListener("click", function () {
-      var open = menu.classList.toggle("open");
-      menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
-    });
-    menu.querySelectorAll("a").forEach(function (link) {
-      link.addEventListener("click", function () {
-        menu.classList.remove("open");
-        menuToggle.setAttribute("aria-expanded", "false");
-      });
-    });
+  var menuClose = document.getElementById("menu-close");
+  var backdrop = document.getElementById("nav-backdrop");
+  function setMenu(open) {
+    menu.classList.toggle("open", open);
+    backdrop.classList.toggle("open", open);
+    document.body.classList.toggle("menu-open", open);
+    menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    menuToggle.setAttribute("aria-label", open ? "Close the menu" : "Open the menu");
+    if (open) {
+      var active = menu.querySelector("a.active");
+      if (active) active.scrollIntoView({ block: "center" });
+      menuClose.focus();
+    }
   }
+  menuToggle.addEventListener("click", function () { setMenu(!menu.classList.contains("open")); });
+  menuClose.addEventListener("click", function () { setMenu(false); menuToggle.focus(); });
+  backdrop.addEventListener("click", function () { setMenu(false); });
+  menu.querySelectorAll("a").forEach(function (link) {
+    link.addEventListener("click", function () { setMenu(false); });
+  });
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && menu.classList.contains("open")) {
+      setMenu(false);
+      menuToggle.focus();
+    }
+  });
+  window.matchMedia("(min-width: 901px)").addEventListener("change", function (query) {
+    if (query.matches) setMenu(false);
+  });
 
   function escapeHtml(str) {
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
