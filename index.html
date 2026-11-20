@@ -841,6 +841,7 @@ nav .nav-head .brand { display: flex; margin: 0; padding: 0; background: none; c
   <a href="#backups">Databases and backups</a>
   <a href="#workers">Scripts and workers</a>
   <a href="#deploy">Deploy to a server</a>
+  <a href="#agents">Use with an AI agent</a>
   <a href="#what-runs">What runs today</a>
   <a href="#trouble">When something is wrong</a>
 </nav>
@@ -1320,6 +1321,19 @@ ssh root@&lt;server-ip&gt; "mkdir -p /var/www"
 scp -r D:\Sites\shop root@&lt;server-ip&gt;:/var/www/shop      # the first time; later copy only what changed
 ssh root@&lt;server-ip&gt; "bash /var/www/shop/deploy.sh --domain shop.com --email you@shop.com"</code></pre>
   <p>Its variables are also flags: <code>--path</code>, <code>--user</code>, <code>--domain</code>, <code>--db-password</code>, <code>--email</code>, <code>--swap</code>, <code>--composer</code>, <code>--build</code>. Mail and S3 are yours to set. In git, keep it with LF endings: <code>*.sh text eol=lf</code> in <code>.gitattributes</code>.</p>
+</section>
+
+<section id="agents" data-search="ai agent skill skills npx claude codex cursor copilot gemini SKILL.md">
+  <h2>Use Djoser with an AI agent</h2>
+  <p><a href="https://github.com/Egyptus/Djoser/tree/main/skills/djoser" target="_blank" rel="noopener noreferrer"><code>skills/djoser</code></a> is a skill in the open Agent Skills format: a <code>SKILL.md</code> and two reference files that teach a coding agent to work with Djoser. It runs PHP, Composer and Artisan through Djoser, changes services in <code>djoser.yaml</code> and then runs <code>djoser up</code>, knows which commands need you at the terminal, and asks before anything that removes or replaces. Agents that read skills, such as Claude Code, Codex, Cursor, GitHub Copilot and Gemini CLI, load it when a project has <code>djoser.yaml</code>.</p>
+  <p>Install it from the project's folder. <code>npx</code> comes with Node.js (<code>djoser install node 22</code>), and no account is needed:</p>
+  <pre data-lang="terminal"><code class="language-cli">djoser npx skills add Egyptus/Djoser --skill djoser    # asks which agents; -a codex, -g for your user, -y asks nothing
+djoser npx skills update                               # the newest copy later</code></pre>
+  <p>Without <code>npx</code>, paste this to the agent in the project:</p>
+  <pre data-lang="prompt"><code class="language-plaintext">Install the Djoser skill in this project: download SKILL.md, references/commands.md and
+references/djoser-yaml.md from https://raw.githubusercontent.com/Egyptus/Djoser/main/skills/djoser/
+into this project's skills folder (.claude/skills/djoser/ for Claude Code, .agents/skills/djoser/
+for other agents), keeping the references folder, then read SKILL.md and follow it.</code></pre>
 </section>
 
 <section id="what-runs" data-search="what runs today supported versions php extensions mysql mariadb postgres mongodb redis rustfs mailpit caddy heidisql cloudflared">
