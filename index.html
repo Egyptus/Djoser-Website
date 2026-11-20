@@ -45,9 +45,9 @@
       "description": "Each project gets its own PHP and Node.js runtime, local HTTPS site, databases (MySQL, MariaDB, PostgreSQL, MongoDB, Redis), S3 storage (RustFS), mail catcher (Mailpit), and supervised background workers on Windows without Docker, WSL, or administrator rights.",
       "operatingSystem": "Windows 10, Windows 11 (x64)",
       "applicationCategory": "DeveloperApplication",
-      "softwareVersion": "0.3.1",
+      "softwareVersion": "0.3.2",
       "downloadUrl": "https://github.com/Egyptus/Djoser/releases/latest",
-      "releaseNotes": "https://github.com/Egyptus/Djoser/releases/tag/v0.3.1",
+      "releaseNotes": "https://github.com/Egyptus/Djoser/releases/tag/v0.3.2",
       "image": "https://raw.githubusercontent.com/Egyptus/Djoser/main/assets/overview.webp",
       "author": {
         "@type": "Organization",
@@ -374,7 +374,7 @@ pre .copy:hover {
 pre:hover .copy, pre:focus-within .copy, pre .copy:focus-visible { opacity: 1; }
 @media (hover: none) { pre .copy { opacity: 1; } }
 
-p code, td code, li code, .card code {
+p code, td code, li code, .card code, .whats-new code {
   font-family: "Cascadia Code", "Cascadia Mono", Consolas, monospace;
   font-size: .88em;
   background: var(--brand-soft);
@@ -787,7 +787,7 @@ nav .nav-head .brand { display: flex; margin: 0; padding: 0; background: none; c
     <svg viewBox="0 0 512 512" aria-hidden="true"><path fill="#FFB655" d="M424.5 418.5 213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9L2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h387.3c7.1 0 13.7-3.8 17.3-10 3.5-6.1 3.5-13.8-.1-19.9z"/><path fill="#EE8700" d="M361.7 73.4c-3.6-6.1-10.1-9.9-17.2-9.9s-13.6 3.8-17.2 9.9l-52.2 89.4 101.3 173.4h104c7.1 0 13.7-3.8 17.3-10 3.5-6.2 3.5-13.8-.1-19.9zM213.6 76.8c-7.1 0-13.6 3.8-17.2 9.9l-91.1 156h108.3zM50.7 336.2 2.7 418.5c-3.6 6.2-3.6 13.8-.1 19.9s10.1 10 17.3 10h193.7V336.2z"/><path fill="#FFE477" d="M213.6 242.7v93.5h162.8l-54.6-93.5z"/></svg>
     <span>Djoser</span>
   </a>
-  <span class="badge">v0.3.1</span>
+  <span class="badge">v0.3.2</span>
 
   <div class="search">
     <input id="search" type="search" placeholder="Search commands &amp; docs... (/)" aria-label="Search commands and documentation">
@@ -870,11 +870,11 @@ nav .nav-head .brand { display: flex; margin: 0; padding: 0; background: none; c
     </div>
   </div>
   <div class="whats-new">
-    <b>New in 0.3.1</b>
-    <a href="#workers">Start and stop workers</a>
-    <a href="#deploy">djoser deploy (experimental)</a>
-    <a href="#hosts">Your own domains</a>
-    <a href="#what-runs">PHP 8.6</a>
+    <b>New in 0.3.2</b>
+    <a href="#what-runs">Newer MariaDB, RustFS and Mailpit</a>
+    <a href="#workers">Safer <code>--save</code> for workers</a>
+    <a href="#deploy">A more careful <code>deploy.sh</code></a>
+    <a href="https://github.com/Egyptus/Djoser/releases/tag/v0.3.2" target="_blank" rel="noopener noreferrer">All changes</a>
   </div>
   <div class="cards cards-4">
     <a class="card" href="#install"><svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 7v6c0 4.4 3.4 7.6 8 8 4.6-.4 8-3.6 8-8V7z"/><path d="m9 12 2 2 4-4"/></svg><b>Why Djoser &amp; Install</b><span>Per-user setup, no administrator rights, and how each project stays on its own versions.</span></a>
@@ -895,7 +895,7 @@ nav .nav-head .brand { display: flex; margin: 0; padding: 0; background: none; c
     <div class="card"><b>Your data stays safe</b><span><code>down</code>, <code>remove</code> and <code>uninstall</code> never delete a database, and backups live outside Djoser.</span></div>
   </div>
   <h3>Install on Windows</h3>
-  <p>Download <code>Djoser-Setup-x64-0.3.1.exe</code> from the <a href="https://github.com/Egyptus/Djoser/releases/latest" target="_blank" rel="noopener noreferrer">latest GitHub release</a> and run it. It installs for your user without administrator rights and offers two options:</p>
+  <p>Download <code>Djoser-Setup-x64-0.3.2.exe</code> from the <a href="https://github.com/Egyptus/Djoser/releases/latest" target="_blank" rel="noopener noreferrer">latest GitHub release</a> and run it. It installs for your user without administrator rights and offers two options:</p>
   <table>
     <tr><th>Installer Option</th><th>Default</th><th>What it does</th></tr>
     <tr><td>Add Djoser to <code>PATH</code></td><td>On</td><td><code>djoser</code> works in any new terminal</td></tr>
@@ -1325,7 +1325,7 @@ ssh root@&lt;server-ip&gt; "bash /var/www/shop/deploy.sh --domain shop.com --ema
 <section id="what-runs" data-search="what runs today supported versions php extensions mysql mariadb postgres mongodb redis rustfs mailpit caddy heidisql cloudflared">
   <h2>What runs today</h2>
   <table>
-    <tr><th>Service / Tool</th><th>Supported in Djoser 0.3.1</th></tr>
+    <tr><th>Service / Tool</th><th>Supported in Djoser 0.3.2</th></tr>
     <tr><td><b>PHP</b></td><td>Official Windows builds (including 8.6), one FastCGI pool per version and extension/INI set, <code>djoser update php</code> for new patches</td></tr>
     <tr><td><b>PHP extensions</b></td><td><code>redis</code>, <code>imagick</code>, <code>memcached</code>, <code>xdebug</code>, <code>sqlsrv</code>, <code>pdo_sqlsrv</code>, <code>apcu</code>, <code>mongodb</code>, <code>amqp</code>, plus all bundled PHP extensions</td></tr>
     <tr><td><b>Composer &amp; Node.js</b></td><td>Per-project versions in any folder; Node.js also reads <code>.nvmrc</code> and <code>.node-version</code></td></tr>
@@ -1360,7 +1360,7 @@ ssh root@&lt;server-ip&gt; "bash /var/www/shop/deploy.sh --domain shop.com --ema
 </section>
 <p id="nothing" class="hidden" role="status" aria-live="polite">Nothing matches.</p>
 <footer class="site-footer">
-  <div>Djoser 0.3.1 &middot; Built by <a href="https://www.egyptustech.com" target="_blank" rel="noopener noreferrer">EgyptusTech</a> &middot; Also offline at <code>https://djoser.localhost</code> while Djoser runs.</div>
+  <div>Djoser 0.3.2 &middot; Built by <a href="https://www.egyptustech.com" target="_blank" rel="noopener noreferrer">EgyptusTech</a> &middot; Also offline at <code>https://djoser.localhost</code> while Djoser runs.</div>
   <div class="footer-links">
     <a href="https://github.com/Egyptus/Djoser/releases/latest" target="_blank" rel="noopener noreferrer">Download</a>
     <a href="https://github.com/Egyptus/Djoser" target="_blank" rel="noopener noreferrer">GitHub</a>
